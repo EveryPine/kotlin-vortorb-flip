@@ -10,9 +10,11 @@ repositories {
 }
 
 dependencies {
+    testImplementation(platform("org.junit:junit-bom:5.12.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(kotlin("test"))
-    testImplementation("org.assertj:assertj-core:3.27.6")
-    testImplementation("io.mockk:mockk:1.14.6}")
+    testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("io.mockk:mockk:1.13.14")
 }
 
 tasks.test {
