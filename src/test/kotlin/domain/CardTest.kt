@@ -32,6 +32,25 @@ class CardTest {
     }
 
     @Nested
+    @DisplayName("multiplyTo 메소드는")
+    inner class MultiplyTo {
+
+        @Test
+        fun `코인에 현재 카드의 요소값을 곱한다`() {
+            // given
+            var actual: Int = 6
+            val card: Card = Card(CardType.THREE)
+            val expected = 18
+
+            // when
+            actual = card.multiplyTo(actual)
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Nested
     @DisplayName("isTypeOf 메소드는")
     inner class IsTypeOf {
 

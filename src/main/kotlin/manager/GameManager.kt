@@ -11,7 +11,7 @@ class GameManager(
 ) {
 
     companion object {
-        private fun createBoard(gameState: GameState): Board {
+        internal fun createBoard(gameState: GameState): Board {
             val cardConfig = CardConfigProvider.provide(gameState.getLevel())
 
             return BoardFactory.create(cardConfig, true)
@@ -20,6 +20,13 @@ class GameManager(
 
     fun isRoundOver(): Boolean {
         return (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
+    }
+
+    fun rerollRound() {
+        gameState.addCoins(board.calculateCoins())
+        gameState.nextRound()
+        gameState.nextLevel(board.isVoltorbFound())
+        board = createBoard(gameState)
     }
 
 }

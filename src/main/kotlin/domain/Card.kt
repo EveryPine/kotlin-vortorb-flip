@@ -13,6 +13,10 @@ class Card(
         return count + type.factor
     }
 
+    fun multiplyTo(coins: Int): Int {
+        return coins * type.factor
+    }
+
     fun isTypeOf(type: CardType): Boolean {
         return this.type == type
     }

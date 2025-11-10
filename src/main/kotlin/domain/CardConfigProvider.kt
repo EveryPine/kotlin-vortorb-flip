@@ -41,7 +41,7 @@ object CardConfigProvider {
         validateLevel(level)
 
         val cardConfigByLevel: List<CardConfig> = cardConfigs[level]!!.toList()
-        val randomNumber = Randoms.pickRandomNumber(0, cardConfigByLevel.size)
+        val randomNumber = Randoms.pickRandomNumber(0, cardConfigByLevel.size - 1)
 
         return cardConfigByLevel[randomNumber]
     }

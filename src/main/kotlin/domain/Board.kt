@@ -71,6 +71,18 @@ class Board(private val cards: List<Card>) {
         return count
     }
 
+    fun calculateCoins(): Int {
+        var coins: Int = 1
+
+        for (card in cards) {
+            if (card.isFlipped()) {
+                coins = card.multiplyTo(coins)
+            }
+        }
+
+        return coins
+    }
+
     fun isAllTwoFound(): Boolean {
         for (card: Card in cardMap.values) {
             if (card.isTypeOf(CardType.TWO) && !card.isFlipped()) {

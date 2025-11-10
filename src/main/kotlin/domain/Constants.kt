@@ -11,4 +11,5 @@ object Constants {
     const val COLUMN_UPPER_BOUND: Int = 5
 
     const val GRID_EDGE_LENGTH = 5
+    const val ROUND_UPPER_BOUND = 10
 }

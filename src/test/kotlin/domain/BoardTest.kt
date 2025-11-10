@@ -96,6 +96,31 @@ class BoardTest {
     }
 
     @Nested
+    @DisplayName("calculateCoins 메소드는")
+    inner class CalculateCoins {
+
+        @Test
+        fun `보드판의 모든 숫자 카드의 곱을 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            flipAll(cards, listOf(
+                Position.of('A', 3),
+                Position.of('A', 4),
+                Position.of('C', 1),
+                Position.of('D', 1),
+            ))
+            val board: Board = Board(cards)
+            val expected: Int = 2 * 2 * 3 * 3
+
+            // when
+            val actual: Int = board.calculateCoins()
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Nested
     @DisplayName("isAllTwoFound 메소드는")
     inner class IsAllTwoFound {
 
@@ -119,7 +144,7 @@ class BoardTest {
         fun `적어도 하나의 숫자 2 카드가 뒤집어지지 않았을 경우 false를 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
-            flipAll(cards, Position.of('A', 1))
+            flipAll(cards, listOf(Position.of('A', 1)))
             val board = Board(cards)
             val expected: Boolean = false
 
@@ -156,7 +181,7 @@ class BoardTest {
         fun `적어도 하나의 숫자 3 카드가 뒤집어지지 않았을 경우 false를 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
-            flipAll(cards, Position.of('A', 2))
+            flipAll(cards, listOf(Position.of('A', 2)))
             val board = Board(cards)
             val expected: Boolean = false
 
@@ -234,13 +259,24 @@ class BoardTest {
         return cardOrder
     }
 
-    protected fun flipAll(cards: List<Card>, excluded: Position?) {
+    protected fun flipAll(cards: List<Card>, excluded: List<Position>?) {
         for ((index, card) in cards.withIndex()) {
-            if (excluded?.toIndex() == index) {
+            if (isExcluded(index, excluded)) {
                 continue
             }
 
             card.flip()
         }
     }
+
+    protected fun isExcluded(index: Int, excluded: List<Position>?): Boolean {
+        if (excluded == null) {
+            return false
+        }
+
+        return excluded.stream()
+            .map{ position -> position.toIndex() }
+            .toList().contains(index)
+    }
+
 }
