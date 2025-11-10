@@ -5,12 +5,20 @@ class Card(
     private var state: CardState = CardState.UNFLIPPED
 ) {
 
+    fun flip() {
+        state = CardState.FLIPPED
+    }
+
     fun addTo(count: Int): Int {
         return count + type.factor
     }
 
-    fun isVoltorb(): Boolean {
-        return type == CardType.VOLTORB
+    fun isTypeOf(type: CardType): Boolean {
+        return this.type == type
+    }
+
+    fun isFlipped(): Boolean {
+        return state == CardState.FLIPPED
     }
 
 

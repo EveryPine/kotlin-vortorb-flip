@@ -28,17 +28,6 @@ class BoardTest {
             assertEquals(expected, actual)
         }
 
-        private fun provideCards(): List<Card> {
-            val cardOrder: MutableList<Card> = mutableListOf()
-
-            repeat(GRID_EDGE_LENGTH * GRID_EDGE_LENGTH) {
-                cardOrder.add(Card(CardType.ONE))
-            }
-            cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.TWO)
-            cardOrder[Position.of('A', 2).toIndex()] = Card(CardType.TWO)
-
-            return cardOrder
-        }
     }
 
     @Nested
@@ -51,25 +40,13 @@ class BoardTest {
             val cardOrder = provideCards()
             val board: Board = Board(cardOrder)
             val column: Int = 1
-            val expected: Int = 7
+            val expected: Int = 6
 
             // when
             val actual: Int = board.calculateColumnNumberCount(column)
 
             // then
             assertEquals(expected, actual)
-        }
-
-        private fun provideCards(): List<Card> {
-            val cardOrder: MutableList<Card> = mutableListOf()
-
-            repeat(GRID_EDGE_LENGTH * GRID_EDGE_LENGTH) {
-                cardOrder.add(Card(CardType.ONE))
-            }
-            cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.TWO)
-            cardOrder[Position.of('B', 1).toIndex()] = Card(CardType.TWO)
-
-            return cardOrder
         }
 
     }
@@ -94,18 +71,6 @@ class BoardTest {
 
         }
 
-        private fun provideCards(): List<Card> {
-            val cardOrder: MutableList<Card> = mutableListOf()
-
-            repeat(GRID_EDGE_LENGTH * GRID_EDGE_LENGTH) {
-                cardOrder.add(Card(CardType.ONE))
-            }
-            cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.VOLTORB)
-            cardOrder[Position.of('A', 2).toIndex()] = Card(CardType.VOLTORB)
-
-            return cardOrder
-        }
-
     }
 
     @Nested
@@ -128,17 +93,154 @@ class BoardTest {
 
         }
 
-        private fun provideCards(): List<Card> {
-            val cardOrder: MutableList<Card> = mutableListOf()
+    }
 
-            repeat(GRID_EDGE_LENGTH * GRID_EDGE_LENGTH) {
-                cardOrder.add(Card(CardType.ONE))
-            }
-            cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.VOLTORB)
-            cardOrder[Position.of('B', 1).toIndex()] = Card(CardType.VOLTORB)
+    @Nested
+    @DisplayName("isAllTwoFound 메소드는")
+    inner class IsAllTwoFound {
 
-            return cardOrder
+        @Test
+        fun `모든 숫자 2 카드가 뒤집어졌을 경우 true를 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            flipAll(cards, null)
+            val board = Board(cards)
+            val expected: Boolean = true
+
+            // when
+            val actual: Boolean = board.isAllTwoFound()
+
+            // then
+            assertEquals(expected, actual)
+
         }
 
+        @Test
+        fun `적어도 하나의 숫자 2 카드가 뒤집어지지 않았을 경우 false를 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            flipAll(cards, Position.of('A', 1))
+            val board = Board(cards)
+            val expected: Boolean = false
+
+            // when
+            val actual: Boolean = board.isAllTwoFound()
+
+            // then
+            assertEquals(expected, actual)
+        }
+
+    }
+
+    @Nested
+    @DisplayName("isAllThreeFound 메소드는")
+    inner class IsAllThreeFound {
+
+        @Test
+        fun `모든 숫자 3 카드가 뒤집어졌을 경우 true를 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            flipAll(cards, null)
+            val board = Board(cards)
+            val expected: Boolean = true
+
+            // when
+            val actual: Boolean = board.isAllThreeFound()
+
+            // then
+            assertEquals(expected, actual)
+
+        }
+
+        @Test
+        fun `적어도 하나의 숫자 3 카드가 뒤집어지지 않았을 경우 false를 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            flipAll(cards, Position.of('A', 2))
+            val board = Board(cards)
+            val expected: Boolean = false
+
+            // when
+            val actual: Boolean = board.isAllThreeFound()
+
+            // then
+            assertEquals(expected, actual)
+        }
+
+    }
+
+    @Nested
+    @DisplayName("isVoltorbFound 메소드는")
+    inner class IsVoltorbFound {
+
+        @Test
+        fun `적어도 하나의 찌리리공 카드가 뒤집어졌을 경우 true를 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            cards[Position.of('A', 3).toIndex()].flip()
+            val board = Board(cards)
+            val expected: Boolean = true
+
+            // when
+            val actual: Boolean = board.isVoltorbFound()
+
+            // then
+            assertEquals(expected, actual)
+
+        }
+
+        @Test
+        fun `모든 찌리리공 카드가 뒤집어지지 않은 경우 false를 반환한다`() {
+            // given
+            val cards: List<Card> = provideCards()
+            val board = Board(cards)
+            val expected: Boolean = false
+
+            // when
+            val actual: Boolean = board.isVoltorbFound()
+
+            // then
+            assertEquals(expected, actual)
+        }
+
+    }
+
+    /*
+    * 다음 보드판을 생성하는 List<Card> 객체 반환
+    *   2 3 X X 2
+        3 1 1 1 1
+        X 1 1 1 1
+        X 1 1 1 1
+        1 1 1 1 1
+    * */
+    protected fun provideCards(): List<Card> {
+        val cardOrder: MutableList<Card> = mutableListOf()
+
+        repeat(GRID_EDGE_LENGTH * GRID_EDGE_LENGTH) {
+            cardOrder.add(Card(CardType.ONE))
+        }
+
+        cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.TWO)
+        cardOrder[Position.of('A', 5).toIndex()] = Card(CardType.TWO)
+
+        cardOrder[Position.of('A', 2).toIndex()] = Card(CardType.THREE)
+        cardOrder[Position.of('B', 1).toIndex()] = Card(CardType.THREE)
+
+        cardOrder[Position.of('A', 3).toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of('A', 4).toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of('C', 1).toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of('D', 1).toIndex()] = Card(CardType.VOLTORB)
+
+        return cardOrder
+    }
+
+    protected fun flipAll(cards: List<Card>, excluded: Position?) {
+        for ((index, card) in cards.withIndex()) {
+            if (excluded?.toIndex() == index) {
+                continue
+            }
+
+            card.flip()
+        }
     }
 }

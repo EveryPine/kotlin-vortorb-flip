@@ -50,7 +50,7 @@ class Board(private val cards: List<Card>) {
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
             val card: Card = cardMap[Position.of(row, column)]!!
 
-            if (card.isVoltorb()) {
+            if (card.isTypeOf(CardType.VOLTORB)) {
                 count++
             }
         }
@@ -63,11 +63,41 @@ class Board(private val cards: List<Card>) {
 
         for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
             val card: Card = cardMap[Position.of(row, column)]!!
-            if (card.isVoltorb()) {
+            if (card.isTypeOf(CardType.VOLTORB)) {
                 count++
             }
         }
 
         return count
+    }
+
+    fun isAllTwoFound(): Boolean {
+        for (card: Card in cardMap.values) {
+            if (card.isTypeOf(CardType.TWO) && !card.isFlipped()) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    fun isAllThreeFound(): Boolean {
+        for (card: Card in cardMap.values) {
+            if (card.isTypeOf(CardType.THREE) && !card.isFlipped()) {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    fun isVoltorbFound(): Boolean {
+        for (card: Card in cardMap.values) {
+            if (card.isTypeOf(CardType.VOLTORB) && card.isFlipped()) {
+                return true
+            }
+        }
+
+        return false
     }
 }

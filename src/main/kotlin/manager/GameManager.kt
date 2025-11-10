@@ -6,18 +6,20 @@ import domain.CardConfigProvider
 import domain.GameState
 
 class GameManager(
-    private val gameState: GameState
+    private val gameState: GameState,
+    private var board: Board = createBoard(gameState)
 ) {
 
-    private lateinit var board: Board
+    companion object {
+        private fun createBoard(gameState: GameState): Board {
+            val cardConfig = CardConfigProvider.provide(gameState.getLevel())
 
-    init {
-        createBoard()
+            return BoardFactory.create(cardConfig, true)
+        }
     }
 
-    private fun createBoard() {
-        val cardConfig = CardConfigProvider.provide(gameState.getLevel())
-        board = BoardFactory.create(cardConfig, true)
+    fun isRoundOver(): Boolean {
+        return (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
     }
 
 }
