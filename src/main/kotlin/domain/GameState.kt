@@ -19,7 +19,7 @@ class GameState(
     }
 
     fun nextRound() {
-        round = min(round + 1, ROUND_UPPER_BOUND)
+        round++
     }
 
     fun nextLevel(voltorbFound: Boolean) {
@@ -29,6 +29,10 @@ class GameState(
         }
 
         level = min(level + 1, MAX_LEVEL)
+    }
+
+    fun isFinalRound(): Boolean {
+        return round > ROUND_UPPER_BOUND
     }
 
 }

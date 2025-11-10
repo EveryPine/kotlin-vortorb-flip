@@ -5,11 +5,13 @@ import domain.BoardFactory
 import domain.CardConfig
 import domain.CardConfigProvider
 import domain.GameState
+import domain.GameStatus
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
 import io.mockk.verify
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -17,6 +19,43 @@ import kotlin.test.Test
 
 @DisplayName("GameManager 클래스의")
 class GameManagerTest {
+
+    @Nested
+    @DisplayName("isGameOver 메소드는")
+    inner class IsGameOver {
+
+        @Test
+        fun `최종 라운드가 종료된 경우 true를 반환한다`() {
+            // given
+            val gameState = mockk<GameState>(relaxed = true)
+            val board = mockk<Board>(relaxed = true)
+            val gameManager = GameManager(gameState, board)
+            every { gameState.isFinalRound() } returns true
+            val expected = true
+
+            // when
+            val actual = gameManager.isGameOver()
+
+            // then
+            assertEquals(expected, actual)
+        }
+
+        @Test
+        fun `사용자에 의해 종료된 경우 true를 반환한다`() {
+            // given
+            val gameState = mockk<GameState>(relaxed = true)
+            val board = mockk<Board>(relaxed = true)
+            val gameManager = GameManager(gameState, board)
+            val expected = true
+
+            // when
+            gameManager.exitGame()
+            val actual = gameManager.isGameOver()
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
 
     @Nested
     @DisplayName("isRoundOver 메소드는")
@@ -54,6 +93,27 @@ class GameManagerTest {
 
             // then
             assertEquals(expected, actual)
+        }
+    }
+
+    @Nested
+    @DisplayName("exitGame 메소드는")
+    inner class ExitGame {
+
+        @Test
+        fun `게임이 종료될 수 있는 상태로 변경한다`() {
+            // given
+            val gameState = GameState(0, 1, 1)
+            val gameManager = GameManager(gameState)
+            val expected = GameStatus.EXITED
+
+            // when
+            gameManager.exitGame()
+
+            // then
+            assertThat(gameManager).extracting("gameStatus")
+                .isEqualTo(expected)
+
         }
     }
 

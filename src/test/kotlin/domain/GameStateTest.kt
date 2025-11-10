@@ -85,4 +85,35 @@ class GameStateTest {
                 .isEqualTo(expected)
         }
     }
+
+    @Nested
+    @DisplayName("isFinalRound 메소드는")
+    inner class IsFinalRound {
+
+        @Test
+        fun `최종 라운드가 종료되었을 경우 true를 반환한다`() {
+            // given
+            val gameState = GameState(300, 11, 3)
+            val expected = true
+
+            // when
+            val actual = gameState.isFinalRound()
+
+            // then
+            assertEquals(expected, actual)
+        }
+
+        @Test
+        fun `최종 라운드가 종료되지 않았을 경우 false를 반환한다`() {
+            // given
+            val gameState = GameState(300, 4, 3)
+            val expected = false
+
+            // when
+            val actual = gameState.isFinalRound()
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
 }

@@ -4,11 +4,14 @@ import domain.Board
 import domain.BoardFactory
 import domain.CardConfigProvider
 import domain.GameState
+import domain.GameStatus
 
 class GameManager(
     private val gameState: GameState,
     private var board: Board = createBoard(gameState)
 ) {
+
+    private var gameStatus = GameStatus.RUNNING
 
     companion object {
         internal fun createBoard(gameState: GameState): Board {
@@ -18,8 +21,16 @@ class GameManager(
         }
     }
 
+    fun isGameOver(): Boolean {
+        return gameState.isFinalRound() || (gameStatus == GameStatus.EXITED)
+    }
+
     fun isRoundOver(): Boolean {
         return (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
+    }
+
+    fun exitGame() {
+        gameStatus = GameStatus.EXITED
     }
 
     fun rerollRound() {
