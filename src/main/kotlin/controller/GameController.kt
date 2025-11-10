@@ -7,10 +7,12 @@ class GameController(
 ) {
 
     fun run() {
-        while (true) {
+        while (!gameManager.isGameOver()) {
             while (!gameManager.isRoundOver()) {
 
             }
+
+            gameManager.rerollRound()
         }
     }
 }
