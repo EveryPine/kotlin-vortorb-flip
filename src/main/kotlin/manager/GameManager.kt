@@ -3,6 +3,7 @@ package manager
 import domain.Board
 import domain.BoardFactory
 import domain.CardConfigProvider
+import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import domain.Position
@@ -24,6 +25,10 @@ class GameManager(
 
     fun requestFlipCard(position: Position) {
         board.flipOf(position)
+    }
+
+    fun requestMarkCard(position: Position, symbol: Char) {
+        board.mark(position, symbol)
     }
 
     fun isGameOver(): Boolean {

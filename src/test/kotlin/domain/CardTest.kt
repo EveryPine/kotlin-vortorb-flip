@@ -5,9 +5,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.EnumSource
-import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
 
 @DisplayName("Card 클래스의")
@@ -29,6 +27,43 @@ class CardTest {
             // then
             assertThat(card).extracting("state")
                 .isEqualTo(expected)
+        }
+    }
+
+    @Nested
+    @DisplayName("markAs 메소드는")
+    inner class MarkAs {
+
+        @Test
+        fun `카드를 요청한 심볼로 마킹한다`() {
+            // given
+            val card = Card(CardType.TWO)
+            val symbol = '1'
+            val expectedMarkType = CardType.ONE
+            val expectedState = CardState.MARKED
+
+            // when
+            card.markAs(symbol)
+
+            // then
+            assertThat(card).extracting("state", "markType")
+                .containsExactly(expectedState, expectedMarkType)
+        }
+
+        @Test
+        fun `이미 뒤집힌 카드인 경우 마킹하지 않는다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.FLIPPED)
+            val symbol = '1'
+            val expected = CardState.FLIPPED
+
+            // when
+            card.markAs(symbol)
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+
         }
     }
 
