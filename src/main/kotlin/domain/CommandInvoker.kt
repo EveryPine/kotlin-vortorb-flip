@@ -30,7 +30,7 @@ class CommandInvoker(private val receiver: GameManager) {
             return cache.getOrPut(command) { MarkCommand(receiver) }
         }
         if (command == "unmark") {
-            return cache.getOrPut(command) { UnmarkCommand() }
+            return cache.getOrPut(command) { UnmarkCommand(receiver) }
         }
         if (command == "status") {
             return cache.getOrPut(command) { StatusCommand() }

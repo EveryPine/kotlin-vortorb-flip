@@ -68,6 +68,53 @@ class CardTest {
     }
 
     @Nested
+    @DisplayName("unmark 메소드는")
+    inner class Unmark {
+
+        @Test
+        fun `카드의 마킹을 해제한다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.MARKED)
+            val expected = CardState.NORMAL
+
+            // when
+            card.unmark()
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+        }
+
+        @Test
+        fun `이미 뒤집힌 카드인 경우에는 마킹 해제를 할 수 없다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.FLIPPED)
+            val expected = CardState.FLIPPED
+
+            // when
+            card.unmark()
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+        }
+
+        @Test
+        fun `마킹되지 않은 카드인 경우에는 마킹 해제를 할 수 없다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.NORMAL)
+            val expected = CardState.NORMAL
+
+            // when
+            card.unmark()
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+        }
+    }
+
+    @Nested
     @DisplayName("addTo 메소드는")
     inner class AddTo {
 

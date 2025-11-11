@@ -31,6 +31,10 @@ class GameManager(
         board.mark(position, symbol)
     }
 
+    fun requestUnmarkCard(position: Position) {
+        board.unmark(position)
+    }
+
     fun isGameOver(): Boolean {
         return gameState.isFinalRound() || (gameStatus == GameStatus.EXITED)
     }

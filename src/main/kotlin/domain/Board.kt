@@ -30,6 +30,10 @@ class Board(private val cards: List<Card>) {
         cardMap[position]!!.markAs(symbol)
     }
 
+    fun unmark(position: Position) {
+        cardMap[position]!!.unmark()
+    }
+
     fun calculateRowNumberCount(row: Char): Int {
         var count: Int = 0
 
