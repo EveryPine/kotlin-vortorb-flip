@@ -9,17 +9,17 @@ import kotlin.test.Test
 class ParserTest {
 
     @Nested
-    @DisplayName("parseString 메소드는")
-    inner class ParseString {
+    @DisplayName("parseToCardConfig 메소드는")
+    inner class ParseToCardConfig {
 
         @Test
-        fun `문자열을 파싱한다`() {
+        fun `문자열을 카드 구성으로 파싱한다`() {
             // given
             val string: String = "1,2,3"
             val expected: List<String> = listOf("1", "2", "3")
 
             // when
-            val actual = Parser.parseString(string)
+            val actual = Parser.parseToCardConfig(string)
 
             // then
             assertEquals(expected, actual)
@@ -34,7 +34,25 @@ class ParserTest {
             // when
 
             // then
-            assertThrows(IllegalArgumentException::class.java) { Parser.parseString(string) }
+            assertThrows(IllegalArgumentException::class.java) { Parser.parseToCardConfig(string) }
+        }
+    }
+
+    @Nested
+    @DisplayName("parseToCommand 메소드는")
+    inner class ParseToCommand {
+
+        @Test
+        fun `문자열을 명령어 리스트로 파싱한다`() {
+            // given
+            val string: String = "flip a b"
+            val expected: List<String> = listOf("flip", "a", "b")
+
+            // when
+            val actual = Parser.parseToCommand(string)
+
+            // then
+            assertEquals(expected, actual)
         }
     }
 

@@ -23,7 +23,7 @@ object CardConfigProvider {
         }
 
         for (line in configBody) {
-            val parsed = Parser.parseString(line)
+            val parsed = Parser.parseToCardConfig(line)
                 .stream()
                 .map { Parser.parseInt(it) }
                 .toList()
