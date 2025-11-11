@@ -1,5 +1,6 @@
 package domain
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -11,6 +12,25 @@ import kotlin.test.Test
 
 @DisplayName("Card 클래스의")
 class CardTest {
+
+    @Nested
+    @DisplayName("flip 메소드는")
+    inner class Flip {
+
+        @Test
+        fun `카드를 뒤집는다`() {
+            // given
+            val card = Card(CardType.TWO)
+            val expected = CardState.FLIPPED
+
+            // when
+            card.flip()
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+        }
+    }
 
     @Nested
     @DisplayName("addTo 메소드는")

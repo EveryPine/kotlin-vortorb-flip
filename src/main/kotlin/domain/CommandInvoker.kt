@@ -1,4 +1,4 @@
-package manager
+package domain
 
 import command.Command
 import command.ExitCommand
@@ -6,9 +6,10 @@ import command.FlipCommand
 import command.MarkCommand
 import command.StatusCommand
 import command.UnmarkCommand
+import manager.GameManager
 import utils.Parser
 
-class CommandManager {
+class CommandInvoker(private val receiver: GameManager) {
 
     private val cache: HashMap<String, Command> = hashMapOf()
     private var command: Command? = null
@@ -23,7 +24,7 @@ class CommandManager {
 
     private fun choiceCommand(command: String): Command {
         if (command == "flip") {
-            return cache.getOrPut(command) { FlipCommand() }
+            return cache.getOrPut(command) { FlipCommand(receiver) }
         }
         if (command == "mark") {
             return cache.getOrPut(command) { MarkCommand() }

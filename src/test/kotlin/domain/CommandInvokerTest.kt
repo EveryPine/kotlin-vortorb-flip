@@ -1,4 +1,4 @@
-package manager
+package domain
 
 import command.Command
 import command.ExitCommand
@@ -6,9 +6,9 @@ import command.FlipCommand
 import command.MarkCommand
 import command.StatusCommand
 import command.UnmarkCommand
-import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.tuple
-import org.junit.jupiter.api.Assertions.*
+import io.mockk.mockk
+import manager.GameManager
+import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.TestInstance
@@ -18,8 +18,8 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 import kotlin.test.Test
 
-@DisplayName("CommandManager 클래스의")
-class CommandManagerTest {
+@DisplayName("CommandInvoker 클래스의")
+class CommandInvokerTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -32,13 +32,14 @@ class CommandManagerTest {
             input: String, expectedCommand: Class<Command>, expectedArgs: List<String>
         ) {
             // given
-            val commandManager = CommandManager()
+            val gameManager: GameManager = mockk(relaxed = true)
+            val commandInvoker = CommandInvoker(gameManager)
 
             // when
-            commandManager.setCommand(input)
+            commandInvoker.setCommand(input)
 
             // then
-            assertThat(commandManager).extracting("command.class", "args")
+            Assertions.assertThat(commandInvoker).extracting("command.class", "args")
                 .containsExactly(expectedCommand, expectedArgs)
 
         }
@@ -47,13 +48,14 @@ class CommandManagerTest {
         fun `잘못된 명령어가 입력된 경우 예외가 발생한다`() {
             // given
             val wrongInput = "3fdsf"
-            val commandManager = CommandManager()
+            val gameManager: GameManager = mockk(relaxed = true)
+            val commandInvoker = CommandInvoker(gameManager)
 
             // when
 
             // then
-            assertThrows(IllegalArgumentException::class.java) {
-                commandManager.setCommand(wrongInput)
+            org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException::class.java) {
+                commandInvoker.setCommand(wrongInput)
             }
         }
 

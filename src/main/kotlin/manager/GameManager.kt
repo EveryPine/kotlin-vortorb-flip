@@ -5,6 +5,7 @@ import domain.BoardFactory
 import domain.CardConfigProvider
 import domain.GameState
 import domain.GameStatus
+import domain.Position
 
 class GameManager(
     private val gameState: GameState,
@@ -19,6 +20,10 @@ class GameManager(
 
             return BoardFactory.create(cardConfig, true)
         }
+    }
+
+    fun requestFlipCard(position: Position) {
+        board.flipOf(position)
     }
 
     fun isGameOver(): Boolean {

@@ -22,6 +22,10 @@ class Board(private val cards: List<Card>) {
         }
     }
 
+    fun flipOf(position: Position) {
+        cardMap[position]!!.flip()
+    }
+
     fun calculateRowNumberCount(row: Char): Int {
         var count: Int = 0
 

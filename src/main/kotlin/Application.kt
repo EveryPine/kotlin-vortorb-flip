@@ -1,12 +1,12 @@
 import controller.GameController
 import domain.GameState
-import manager.CommandManager
+import domain.CommandInvoker
 import manager.GameManager
 
 fun main() {
     val gameState: GameState = GameState(0, 1, 1)
     val gameManager: GameManager = GameManager(gameState)
-    val commandManager: CommandManager = CommandManager()
-    val gameController: GameController = GameController(gameManager, commandManager)
+    val commandInvoker: CommandInvoker = CommandInvoker(gameManager)
+    val gameController: GameController = GameController(gameManager, commandInvoker)
     gameController.run()
 }
