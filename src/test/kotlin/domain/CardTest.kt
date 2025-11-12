@@ -51,19 +51,17 @@ class CardTest {
         }
 
         @Test
-        fun `이미 뒤집힌 카드인 경우 마킹하지 않는다`() {
+        fun `이미 뒤집힌 카드인 경우 예외가 발생한다`() {
             // given
             val card = Card(CardType.TWO, CardState.FLIPPED)
             val symbol = '1'
-            val expected = CardState.FLIPPED
 
             // when
-            card.markAs(symbol)
 
             // then
-            assertThat(card).extracting("state")
-                .isEqualTo(expected)
-
+            assertThrows(IllegalStateException::class.java) {
+                card.markAs(symbol)
+            }
         }
     }
 
@@ -86,31 +84,30 @@ class CardTest {
         }
 
         @Test
-        fun `이미 뒤집힌 카드인 경우에는 마킹 해제를 할 수 없다`() {
+        fun `이미 뒤집힌 카드인 경우 예외가 발생한다`() {
             // given
             val card = Card(CardType.TWO, CardState.FLIPPED)
-            val expected = CardState.FLIPPED
 
             // when
-            card.unmark()
 
             // then
-            assertThat(card).extracting("state")
-                .isEqualTo(expected)
+            assertThrows(IllegalStateException::class.java) {
+                card.unmark()
+            }
         }
 
         @Test
-        fun `마킹되지 않은 카드인 경우에는 마킹 해제를 할 수 없다`() {
+        fun `마킹되지 않은 카드인 경우 예외가 발생한다`() {
             // given
             val card = Card(CardType.TWO, CardState.NORMAL)
             val expected = CardState.NORMAL
 
             // when
-            card.unmark()
 
             // then
-            assertThat(card).extracting("state")
-                .isEqualTo(expected)
+            assertThrows(IllegalStateException::class.java) {
+                card.unmark()
+            }
         }
     }
 

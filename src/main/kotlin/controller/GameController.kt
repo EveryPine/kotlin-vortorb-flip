@@ -28,6 +28,8 @@ class GameController(
             commandInvoker.execute()
         } catch (e: IllegalArgumentException) {
             OutputView.printInfoMessage(e.message!!)
+        } catch (e: IllegalStateException) {
+            OutputView.printInfoMessage(e.message!!)
         }
     }
 }
