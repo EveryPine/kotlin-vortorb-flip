@@ -36,8 +36,9 @@ class GameManager(
         OutputView.printInfoMessage("$position 카드를 ${symbol}로 마킹했습니다")
     }
 
-    fun requestUnmarkCard(position: Position) {
-        board.unmark(position)
+    fun requestUnmarkCard(position: String) {
+        board.unmark(Position.of(position))
+        OutputView.printInfoMessage("$position 카드의 마킹을 해제했습니다")
     }
 
     fun requestPrintStatus() {
