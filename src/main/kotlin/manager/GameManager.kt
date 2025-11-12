@@ -51,7 +51,7 @@ class GameManager(
     }
 
     fun isRoundOver(): Boolean {
-        return (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
+        return isGameOver() || (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
     }
 
     fun exitGame() {
