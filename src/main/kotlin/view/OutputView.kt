@@ -5,6 +5,7 @@ import domain.Constants.COLUMN_LOWER_BOUND
 import domain.Constants.COLUMN_UPPER_BOUND
 import domain.Constants.MAX_LEVEL
 import domain.Constants.MIN_LEVEL
+import domain.Constants.ROUND_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
 import domain.Position
@@ -53,7 +54,7 @@ object OutputView {
             print(String.format("%2s", "?"))
         }
         if (cardDto.state == CardState.FLIPPED) {
-            print(String.format("%2s", cardDto.symbol))
+            print(ConsoleColor.green(String.format("%2s", cardDto.symbol)))
         }
         if (cardDto.state == CardState.MARKED) {
             print(ConsoleColor.yellow(String.format("%2s", cardDto.markSymbol)))
@@ -129,6 +130,6 @@ object OutputView {
     fun printGameResult(gameStateDto: GameStateDto) {
         println("게임이 종료되었습니다.")
         println("--- 게임 결과 ---")
-        println("누적 코인: ${gameStateDto.totalCoins}")
+        println("누적 코인: ${gameStateDto.totalCoins}개")
     }
 }
