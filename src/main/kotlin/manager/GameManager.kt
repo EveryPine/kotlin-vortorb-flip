@@ -31,8 +31,9 @@ class GameManager(
         OutputView.printInfoMessage("$position 카드를 뒤집었습니다.")
     }
 
-    fun requestMarkCard(position: Position, symbol: Char) {
-        board.mark(position, symbol)
+    fun requestMarkCard(position: String, symbol: Char) {
+        board.mark(Position.of(position), symbol)
+        OutputView.printInfoMessage("$position 카드를 ${symbol}로 마킹했습니다")
     }
 
     fun requestUnmarkCard(position: Position) {
