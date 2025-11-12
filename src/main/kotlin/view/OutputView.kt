@@ -34,7 +34,8 @@ object OutputView {
     }
 
     fun printGameStatus(gameStateDto: GameStateDto, boardDto: BoardDto) {
-        println("\n누적 코인: ${gameStateDto.totalCoins}개 | 현재 코인: ${boardDto.roundCoins} | 레벨: ${gameStateDto.level}\n")
+        println("\n라운드: ${gameStateDto.round} | 누적 코인: ${gameStateDto.totalCoins}개 | 현재 코인: ${boardDto.roundCoins}" +
+                " | 레벨: ${gameStateDto.level}\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
         for (row: Char in ROW_LOWER_BOUND .. ROW_UPPER_BOUND) {
