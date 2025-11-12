@@ -12,6 +12,7 @@ class GameController(
 
     fun run() {
         var input: String
+        gameManager.printGameStartGuide()
         while (!gameManager.isGameOver()) {
             while (!gameManager.isRoundOver()) {
                 OutputView.printCommandGuide()
