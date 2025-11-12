@@ -83,7 +83,9 @@ object OutputView {
         printRoundOverReason(roundResultDto)
         print("${roundResultDto.round} 라운드가 종료되었습니다. ")
         printObtainedCoins(roundResultDto)
-        printLevelChangedGuide(roundResultDto)
+        if (roundResultDto.round != ROUND_UPPER_BOUND) {
+            printLevelChangedGuide(roundResultDto)
+        }
         println()
     }
 
