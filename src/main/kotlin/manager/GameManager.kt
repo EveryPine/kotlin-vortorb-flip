@@ -68,4 +68,8 @@ class GameManager(
         board = createBoard(gameState)
     }
 
+    fun printGameResult() {
+        OutputView.printGameResult(GameStateDto.from(gameState))
+    }
+
 }

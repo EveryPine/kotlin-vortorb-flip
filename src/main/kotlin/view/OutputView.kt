@@ -67,4 +67,10 @@ object OutputView {
         }
         println()
     }
+
+    fun printGameResult(gameStateDto: GameStateDto) {
+        println("게임이 종료되었습니다.")
+        println("--- 게임 결과 ---")
+        println("누적 코인: ${gameStateDto.totalCoins}")
+    }
 }

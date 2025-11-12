@@ -20,6 +20,7 @@ class GameController(
             }
             gameManager.rerollRound()
         }
+        gameManager.printGameResult()
     }
 
     private fun invokeCommand(input: String) {
