@@ -9,7 +9,7 @@ class FlipCommand(private val gameManager: GameManager): Command {
 
     override fun execute(args: List<String>) {
         validate(args)
-        gameManager.requestFlipCard(Position.of(args[0]))
+        gameManager.requestFlipCard(args[0])
     }
 
     private fun validate(args: List<String>) {

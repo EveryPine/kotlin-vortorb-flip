@@ -26,8 +26,9 @@ class GameManager(
         }
     }
 
-    fun requestFlipCard(position: Position) {
-        board.flipOf(position)
+    fun requestFlipCard(position: String) {
+        board.flipOf(Position.of(position))
+        OutputView.printInfoMessage("$position 카드를 뒤집었습니다.")
     }
 
     fun requestMarkCard(position: Position, symbol: Char) {
