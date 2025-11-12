@@ -3,6 +3,7 @@ package domain
 import domain.Constants.MAX_LEVEL
 import domain.Constants.MIN_LEVEL
 import domain.Constants.ROUND_UPPER_BOUND
+import dto.GameStateDto
 import kotlin.math.max
 import kotlin.math.min
 
@@ -11,6 +12,8 @@ class GameState(
     private var round: Int,
     private var level: Int
 ) {
+
+    fun getCoins(): Int = coins
 
     fun getLevel(): Int = level
 

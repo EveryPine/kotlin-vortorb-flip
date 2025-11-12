@@ -3,8 +3,13 @@ package manager
 import domain.Board
 import domain.BoardFactory
 import domain.CardConfigProvider
+import domain.CardType
 import domain.GameState
 import domain.GameStatus
+import domain.Position
+import dto.BoardDto
+import dto.GameStateDto
+import view.OutputView
 
 class GameManager(
     private val gameState: GameState,
@@ -21,12 +26,35 @@ class GameManager(
         }
     }
 
+    fun requestFlipCard(position: String) {
+        board.flipOf(Position.of(position))
+        OutputView.printInfoMessage("$position 카드를 뒤집었습니다.")
+    }
+
+    fun requestMarkCard(position: String, symbol: Char) {
+        board.mark(Position.of(position), symbol)
+        OutputView.printInfoMessage("$position 카드를 ${symbol}로 마킹했습니다")
+    }
+
+    fun requestUnmarkCard(position: String) {
+        board.unmark(Position.of(position))
+        OutputView.printInfoMessage("$position 카드의 마킹을 해제했습니다")
+    }
+
+    fun requestPrintStatus() {
+        OutputView.printStatus(GameStateDto.from(gameState), BoardDto.from(board))
+    }
+
+    fun requestExitGame() {
+        exitGame()
+    }
+
     fun isGameOver(): Boolean {
         return gameState.isFinalRound() || (gameStatus == GameStatus.EXITED)
     }
 
     fun isRoundOver(): Boolean {
-        return (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
+        return isGameOver() || (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
     }
 
     fun exitGame() {
@@ -38,6 +66,10 @@ class GameManager(
         gameState.nextRound()
         gameState.nextLevel(board.isVoltorbFound())
         board = createBoard(gameState)
+    }
+
+    fun printGameResult() {
+        OutputView.printGameResult(GameStateDto.from(gameState))
     }
 
 }

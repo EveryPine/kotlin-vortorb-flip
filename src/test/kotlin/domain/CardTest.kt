@@ -1,16 +1,115 @@
 package domain
 
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.EnumSource
-import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
 
 @DisplayName("Card 클래스의")
 class CardTest {
+
+    @Nested
+    @DisplayName("flip 메소드는")
+    inner class Flip {
+
+        @Test
+        fun `카드를 뒤집는다`() {
+            // given
+            val card = Card(CardType.TWO)
+            val expected = CardState.FLIPPED
+
+            // when
+            card.flip()
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+        }
+    }
+
+    @Nested
+    @DisplayName("markAs 메소드는")
+    inner class MarkAs {
+
+        @Test
+        fun `카드를 요청한 심볼로 마킹한다`() {
+            // given
+            val card = Card(CardType.TWO)
+            val symbol = '1'
+            val expectedMarkType = CardType.ONE
+            val expectedState = CardState.MARKED
+
+            // when
+            card.markAs(symbol)
+
+            // then
+            assertThat(card).extracting("state", "markType")
+                .containsExactly(expectedState, expectedMarkType)
+        }
+
+        @Test
+        fun `이미 뒤집힌 카드인 경우 예외가 발생한다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.FLIPPED)
+            val symbol = '1'
+
+            // when
+
+            // then
+            assertThrows(IllegalStateException::class.java) {
+                card.markAs(symbol)
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("unmark 메소드는")
+    inner class Unmark {
+
+        @Test
+        fun `카드의 마킹을 해제한다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.MARKED)
+            val expected = CardState.NORMAL
+
+            // when
+            card.unmark()
+
+            // then
+            assertThat(card).extracting("state")
+                .isEqualTo(expected)
+        }
+
+        @Test
+        fun `이미 뒤집힌 카드인 경우 예외가 발생한다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.FLIPPED)
+
+            // when
+
+            // then
+            assertThrows(IllegalStateException::class.java) {
+                card.unmark()
+            }
+        }
+
+        @Test
+        fun `마킹되지 않은 카드인 경우 예외가 발생한다`() {
+            // given
+            val card = Card(CardType.TWO, CardState.NORMAL)
+            val expected = CardState.NORMAL
+
+            // when
+
+            // then
+            assertThrows(IllegalStateException::class.java) {
+                card.unmark()
+            }
+        }
+    }
 
     @Nested
     @DisplayName("addTo 메소드는")

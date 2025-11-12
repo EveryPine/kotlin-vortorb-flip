@@ -17,6 +17,21 @@ class Position private constructor(private val row: Char, private val column: In
             return cache.getOrPut(row to column, { Position(row, column) })
         }
 
+        fun of(position: String): Position {
+            validate(position)
+            val row: Char = position[0]
+            val column: Int = position[1] - '0'
+
+            return cache.getOrPut(row to column, { Position(row, column) })
+        }
+
+        private fun validate(position: String) {
+            if (position.length != 2) {
+                throw IllegalArgumentException("올바르지 않은 위치 문자열입니다: $position")
+            }
+            validate(position[0], position[1] - '0')
+        }
+
         private fun validate(row: Char, column: Int) {
             if (row !in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
                 throw IllegalArgumentException("행 위치가 범위를 벗어났습니다: $row")

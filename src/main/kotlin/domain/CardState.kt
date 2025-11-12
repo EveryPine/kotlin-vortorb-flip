@@ -1,8 +1,7 @@
 package domain
 
 enum class CardState {
+    NORMAL,
     FLIPPED,
-    UNFLIPPED,
-    MARKED,
-    UNMARKED
+    MARKED;
 }
