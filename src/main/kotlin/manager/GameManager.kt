@@ -7,6 +7,9 @@ import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import domain.Position
+import dto.BoardDto
+import dto.GameStateDto
+import view.OutputView
 
 class GameManager(
     private val gameState: GameState,
@@ -33,6 +36,10 @@ class GameManager(
 
     fun requestUnmarkCard(position: Position) {
         board.unmark(position)
+    }
+
+    fun requestPrintStatus() {
+        OutputView.printStatus(GameStateDto.from(gameState), BoardDto.from(board))
     }
 
     fun isGameOver(): Boolean {

@@ -22,6 +22,8 @@ class Board(private val cards: List<Card>) {
         }
     }
 
+    fun getCardMap(): HashMap<Position, Card> = cardMap
+
     fun flipOf(position: Position) {
         cardMap[position]!!.flip()
     }

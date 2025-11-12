@@ -33,7 +33,7 @@ class CommandInvoker(private val receiver: GameManager) {
             return cache.getOrPut(command) { UnmarkCommand(receiver) }
         }
         if (command == "status") {
-            return cache.getOrPut(command) { StatusCommand() }
+            return cache.getOrPut(command) { StatusCommand(receiver) }
         }
         if (command == "exit") {
             return cache.getOrPut(command) { ExitCommand() }
@@ -49,10 +49,6 @@ class CommandInvoker(private val receiver: GameManager) {
     private fun validate() {
         if (command == null) {
             throw IllegalArgumentException("명령어가 입력되지 않았습니다")
-        }
-
-        if (args!!.isEmpty()) {
-            throw IllegalArgumentException("명령어 인자가 없습니다")
         }
     }
 }
