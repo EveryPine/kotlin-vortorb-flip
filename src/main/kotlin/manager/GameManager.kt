@@ -3,12 +3,12 @@ package manager
 import domain.Board
 import domain.BoardFactory
 import domain.CardConfigProvider
-import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import domain.Position
 import dto.BoardDto
 import dto.GameStateDto
+import dto.RoundResultDto
 import view.OutputView
 
 class GameManager(
@@ -42,7 +42,7 @@ class GameManager(
     }
 
     fun requestPrintStatus() {
-        OutputView.printStatus(GameStateDto.from(gameState), BoardDto.from(board))
+        OutputView.printGameStatus(GameStateDto.from(gameState), BoardDto.from(board))
     }
 
     fun requestExitGame() {
@@ -66,6 +66,22 @@ class GameManager(
         gameState.nextRound()
         gameState.nextLevel(board.isVoltorbFound())
         board = createBoard(gameState)
+    }
+
+    fun printGameStartGuide() {
+        OutputView.printGameStartGuide()
+    }
+
+    fun printRoundStartGuide() {
+        OutputView.printRoundStartGuide(GameStateDto.from(gameState))
+    }
+
+    fun printGameStatus() {
+        OutputView.printGameStatus(GameStateDto.from(gameState), BoardDto.from(board))
+    }
+
+    fun printRoundResult() {
+        OutputView.printRoundResult(RoundResultDto.from(gameState, board))
     }
 
     fun printGameResult() {

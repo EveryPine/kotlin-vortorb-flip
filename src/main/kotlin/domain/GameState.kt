@@ -15,6 +15,8 @@ class GameState(
 
     fun getCoins(): Int = coins
 
+    fun getRound(): Int = round
+
     fun getLevel(): Int = level
 
     fun addCoins(coins: Int) {

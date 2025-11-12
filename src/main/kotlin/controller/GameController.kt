@@ -12,12 +12,16 @@ class GameController(
 
     fun run() {
         var input: String
+        gameManager.printGameStartGuide()
         while (!gameManager.isGameOver()) {
+            gameManager.printRoundStartGuide()
             while (!gameManager.isRoundOver()) {
+                gameManager.printGameStatus()
                 OutputView.printCommandGuide()
                 input = InputView.validInput()
                 invokeCommand(input)
             }
+            gameManager.printRoundResult()
             gameManager.rerollRound()
         }
         gameManager.printGameResult()
