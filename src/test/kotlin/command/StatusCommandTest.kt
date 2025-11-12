@@ -32,6 +32,21 @@ class StatusCommandTest {
             }
 
         }
+
+        @Test
+        fun `명령어에 인자가 포함되어 있는 경우 예외가 발생한다`() {
+            // given
+            val gameManager = mockk<GameManager>(relaxed = true)
+            val statusCommand: Command = StatusCommand(gameManager)
+            val args: List<String> = listOf("wrong_arg")
+
+            // when
+
+            // then
+            assertThrows(IllegalArgumentException::class.java) {
+                statusCommand.execute(args)
+            }
+        }
     }
 
 }
