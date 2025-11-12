@@ -18,6 +18,10 @@ object OutputView {
         println("찌리리공 뒤집기 게임을 시작합니다")
     }
 
+    fun printRoundStartGuide(gameStateDto: GameStateDto) {
+        println("${gameStateDto.round} 라운드가 시작되었습니다")
+    }
+
     fun printCommandGuide() {
         println("명령어를 입력해주세요")
     }

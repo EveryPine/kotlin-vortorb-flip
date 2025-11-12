@@ -72,6 +72,10 @@ class GameManager(
         OutputView.printGameStartGuide()
     }
 
+    fun printRoundStartGuide() {
+        OutputView.printRoundStartGuide(GameStateDto.from(gameState))
+    }
+
     fun printGameResult() {
         OutputView.printGameResult(GameStateDto.from(gameState))
     }

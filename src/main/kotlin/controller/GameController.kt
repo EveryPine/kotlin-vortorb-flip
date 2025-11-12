@@ -14,6 +14,7 @@ class GameController(
         var input: String
         gameManager.printGameStartGuide()
         while (!gameManager.isGameOver()) {
+            gameManager.printRoundStartGuide()
             while (!gameManager.isRoundOver()) {
                 OutputView.printCommandGuide()
                 input = InputView.validInput()
