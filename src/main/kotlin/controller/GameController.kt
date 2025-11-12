@@ -16,10 +16,18 @@ class GameController(
             while (!gameManager.isRoundOver()) {
                 OutputView.printCommandGuide()
                 input = InputView.validInput()
-                commandInvoker.setCommand(input)
-                commandInvoker.execute()
+                invokeCommand(input)
             }
             gameManager.rerollRound()
+        }
+    }
+
+    private fun invokeCommand(input: String) {
+        try {
+            commandInvoker.setCommand(input)
+            commandInvoker.execute()
+        } catch (e: IllegalArgumentException) {
+            OutputView.printInfoMessage(e.message!!)
         }
     }
 }
