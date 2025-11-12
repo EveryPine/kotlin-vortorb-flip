@@ -3,12 +3,15 @@ package view
 import domain.CardState
 import domain.Constants.COLUMN_LOWER_BOUND
 import domain.Constants.COLUMN_UPPER_BOUND
+import domain.Constants.MAX_LEVEL
+import domain.Constants.MIN_LEVEL
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
 import domain.Position
 import dto.BoardDto
 import dto.CardDto
 import dto.GameStateDto
+import dto.RoundResultDto
 import utils.ConsoleColor
 
 object OutputView {
@@ -74,6 +77,52 @@ object OutputView {
         }
         println()
     }
+
+    fun printRoundResult(roundResultDto: RoundResultDto) {
+        println()
+        printRoundOverReason(roundResultDto)
+        print("${roundResultDto.round} 라운드가 종료되었습니다. ")
+        printObtainedCoins(roundResultDto)
+        printLevelChangedGuide(roundResultDto)
+        println()
+    }
+
+    private fun printRoundOverReason(roundResultDto: RoundResultDto) {
+        if (!roundResultDto.voltorbFound) {
+            println("축하합니다! 이번 라운드에 존재하는 모든 2와 3 카드를 뒤집었습니다.")
+            return
+        }
+        println("찌리리공을 뒤집었습니다!")
+    }
+
+    private fun printObtainedCoins(roundResultDto: RoundResultDto) {
+        if (!roundResultDto.voltorbFound) {
+            println("이번 라운드에서 코인 ${roundResultDto.obtainedCoins}개를 획득했습니다.")
+        }
+        if (roundResultDto.voltorbFound) {
+            println("이번 라운드에서는 코인을 획득하지 못했습니다.")
+        }
+    }
+
+    private fun printLevelChangedGuide(roundResultDto: RoundResultDto) {
+        if (roundResultDto.voltorbFound && roundResultDto.level != MIN_LEVEL) {
+            println("레벨이 1 내려갔습니다.")
+            return
+        }
+        if (!roundResultDto.voltorbFound && roundResultDto.level != MAX_LEVEL) {
+            println("레벨이 1 올라갔습니다.")
+            return
+        }
+        if (roundResultDto.voltorbFound && roundResultDto.level == MIN_LEVEL) {
+            println("레벨이 더 이상 내려가지 않습니다.")
+            return
+        }
+        if (!roundResultDto.voltorbFound && roundResultDto.level == MAX_LEVEL) {
+            println("레벨이 더 이상 올라가지 않습니다")
+            return
+        }
+    }
+
 
     fun printGameResult(gameStateDto: GameStateDto) {
         println("게임이 종료되었습니다.")

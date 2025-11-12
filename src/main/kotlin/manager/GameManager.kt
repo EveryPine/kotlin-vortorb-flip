@@ -8,6 +8,7 @@ import domain.GameStatus
 import domain.Position
 import dto.BoardDto
 import dto.GameStateDto
+import dto.RoundResultDto
 import view.OutputView
 
 class GameManager(
@@ -77,6 +78,10 @@ class GameManager(
 
     fun printGameStatus() {
         OutputView.printGameStatus(GameStateDto.from(gameState), BoardDto.from(board))
+    }
+
+    fun printRoundResult() {
+        OutputView.printRoundResult(RoundResultDto.from(gameState, board))
     }
 
     fun printGameResult() {

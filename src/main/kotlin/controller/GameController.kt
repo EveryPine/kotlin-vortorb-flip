@@ -21,6 +21,7 @@ class GameController(
                 input = InputView.validInput()
                 invokeCommand(input)
             }
+            gameManager.printRoundResult()
             gameManager.rerollRound()
         }
         gameManager.printGameResult()
