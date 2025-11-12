@@ -3,7 +3,6 @@ package manager
 import domain.Board
 import domain.BoardFactory
 import domain.CardConfigProvider
-import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import domain.Position
@@ -42,7 +41,7 @@ class GameManager(
     }
 
     fun requestPrintStatus() {
-        OutputView.printStatus(GameStateDto.from(gameState), BoardDto.from(board))
+        OutputView.printGameStatus(GameStateDto.from(gameState), BoardDto.from(board))
     }
 
     fun requestExitGame() {
@@ -74,6 +73,10 @@ class GameManager(
 
     fun printRoundStartGuide() {
         OutputView.printRoundStartGuide(GameStateDto.from(gameState))
+    }
+
+    fun printGameStatus() {
+        OutputView.printGameStatus(GameStateDto.from(gameState), BoardDto.from(board))
     }
 
     fun printGameResult() {
