@@ -18,15 +18,16 @@ import utils.ConsoleColor
 object OutputView {
 
     fun printGameStartGuide() {
-        println("찌리리공 뒤집기 게임을 시작합니다")
+        println("찌리리공 뒤집기 게임을 시작합니다!")
     }
 
     fun printRoundStartGuide(gameStateDto: GameStateDto) {
-        println("${gameStateDto.round} 라운드가 시작되었습니다")
+        println("${gameStateDto.round} 라운드가 시작되었습니다.")
     }
 
     fun printCommandGuide() {
-        println("명령어를 입력해주세요")
+        println("명령어를 입력해주세요.")
+        print(">> ")
     }
 
     fun printInfoMessage(message: String) {
@@ -34,8 +35,8 @@ object OutputView {
     }
 
     fun printGameStatus(gameStateDto: GameStateDto, boardDto: BoardDto) {
-        println("\n라운드: ${gameStateDto.round} | 누적 코인: ${gameStateDto.totalCoins}개 | 현재 코인: ${boardDto.roundCoins}" +
-                " | 레벨: ${gameStateDto.level}\n")
+        println("\n라운드: ${gameStateDto.round} | 레벨: ${gameStateDto.level} | 누적 코인: ${gameStateDto.totalCoins}개 | " +
+                "현재 코인: ${boardDto.roundCoins}개\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
         for (row: Char in ROW_LOWER_BOUND .. ROW_UPPER_BOUND) {
@@ -122,7 +123,7 @@ object OutputView {
             return
         }
         if (!roundResultDto.voltorbFound && roundResultDto.level == MAX_LEVEL) {
-            println("레벨이 더 이상 올라가지 않습니다")
+            println("레벨이 더 이상 올라가지 않습니다.")
             return
         }
     }
