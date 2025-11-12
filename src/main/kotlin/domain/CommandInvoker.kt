@@ -36,7 +36,7 @@ class CommandInvoker(private val receiver: GameManager) {
             return cache.getOrPut(command) { StatusCommand(receiver) }
         }
         if (command == "exit") {
-            return cache.getOrPut(command) { ExitCommand() }
+            return cache.getOrPut(command) { ExitCommand(receiver) }
         }
         throw IllegalArgumentException("$command 는 존재하지 않는 명령어입니다")
     }

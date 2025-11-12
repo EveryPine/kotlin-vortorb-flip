@@ -1,7 +1,17 @@
 package command
 
-class ExitCommand: Command {
+import manager.GameManager
+
+class ExitCommand(private val gameManager: GameManager): Command {
+
     override fun execute(args: List<String>) {
-        TODO("Not yet implemented")
+        validate(args)
+        gameManager.requestExitGame()
+    }
+
+    private fun validate(args: List<String>) {
+        if (args.isNotEmpty()) {
+            throw IllegalArgumentException("status 명령은 인자를 받을 수 없습니다")
+        }
     }
 }

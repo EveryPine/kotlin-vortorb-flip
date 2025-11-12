@@ -42,6 +42,10 @@ class GameManager(
         OutputView.printStatus(GameStateDto.from(gameState), BoardDto.from(board))
     }
 
+    fun requestExitGame() {
+        exitGame()
+    }
+
     fun isGameOver(): Boolean {
         return gameState.isFinalRound() || (gameStatus == GameStatus.EXITED)
     }
