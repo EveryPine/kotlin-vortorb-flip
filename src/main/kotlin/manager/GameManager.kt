@@ -2,6 +2,7 @@ package manager
 
 import domain.Board
 import domain.BoardFactory
+import domain.CardConfig
 import domain.CardConfigProvider
 import domain.GameState
 import domain.GameStatus
@@ -16,11 +17,11 @@ class GameManager(
     private var board: Board = createBoard(gameState)
 ) {
 
-    private var gameStatus = GameStatus.RUNNING
+    private var gameStatus: GameStatus = GameStatus.RUNNING
 
     companion object {
         internal fun createBoard(gameState: GameState): Board {
-            val cardConfig = CardConfigProvider.provide(gameState.getLevel())
+            val cardConfig: CardConfig = CardConfigProvider.provide(gameState.getLevel())
 
             return BoardFactory.create(cardConfig, true)
         }

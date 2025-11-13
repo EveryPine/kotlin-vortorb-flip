@@ -12,7 +12,7 @@ class Position private constructor(private val row: Char, private val column: In
         private val cache: HashMap<Pair<Char, Int>, Position> = HashMap()
 
         fun of(row: Char, column: Int): Position {
-            val uppercaseRow = row.uppercaseChar()
+            val uppercaseRow: Char = row.uppercaseChar()
 
             validateRow(uppercaseRow)
             validateColumn(column)

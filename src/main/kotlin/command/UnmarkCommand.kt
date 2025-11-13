@@ -9,7 +9,7 @@ class UnmarkCommand(private val gameManager: GameManager) : Command {
 
     override fun execute(args: List<String>) {
         validate(args)
-        val position = args[0]
+        val position: String = args[0]
         gameManager.requestUnmarkCard(position)
     }
 

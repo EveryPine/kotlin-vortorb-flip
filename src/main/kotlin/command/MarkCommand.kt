@@ -9,8 +9,8 @@ class MarkCommand(private val gameManager: GameManager) : Command {
 
     override fun execute(args: List<String>) {
         validate(args)
-        val position = args[0]
-        val symbol = args[1].single()
+        val position: String = args[0]
+        val symbol: Char = args[1].single()
         gameManager.requestMarkCard(position, symbol)
     }
 

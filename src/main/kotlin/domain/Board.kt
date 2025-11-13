@@ -88,7 +88,7 @@ class Board(private val cards: List<Card>) {
     fun calculateCoins(): Int {
         var coins: Int = 1
 
-        for (card in cards) {
+        for (card: Card in cards) {
             if (card.isFlipped()) {
                 coins = card.multiplyTo(coins)
             }

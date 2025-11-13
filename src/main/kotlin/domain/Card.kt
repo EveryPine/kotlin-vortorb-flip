@@ -17,6 +17,7 @@ class Card(
         if (state == CardState.FLIPPED) {
             throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다.")
         }
+
         state = CardState.FLIPPED
     }
 

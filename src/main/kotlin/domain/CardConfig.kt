@@ -10,7 +10,7 @@ class CardConfig(
         Constants.GRID_EDGE_LENGTH * Constants.GRID_EDGE_LENGTH - (twoCount + threeCount + voltorbCount)
 
     fun toMutableList(): MutableList<Card> {
-        val cards = mutableListOf<Card>()
+        val cards: MutableList<Card> = mutableListOf()
 
         cards.addAll(Array(oneCount, { Card(CardType.ONE) }))
         cards.addAll(Array(twoCount, { Card(CardType.TWO) }))

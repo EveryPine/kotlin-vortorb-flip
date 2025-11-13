@@ -18,12 +18,12 @@ object CardConfigProvider {
         val absoluteFilePath: String = "src/main/resources/card_config.csv"
         val configBody: List<String> = CSVReader.readBody(absoluteFilePath)
 
-        for (level in MIN_LEVEL..MAX_LEVEL) {
+        for (level: Int in MIN_LEVEL..MAX_LEVEL) {
             cardConfigs[level] = mutableListOf()
         }
 
-        for (line in configBody) {
-            val parsed = Parser.parseToCardConfig(line)
+        for (line: String in configBody) {
+            val parsed: List<Int> = Parser.parseToCardConfig(line)
                 .stream()
                 .map { Parser.parseInt(it) }
                 .toList()
@@ -41,7 +41,7 @@ object CardConfigProvider {
         validateLevel(level)
 
         val cardConfigByLevel: List<CardConfig> = cardConfigs[level]!!.toList()
-        val randomNumber = Randoms.pickRandomNumber(0, cardConfigByLevel.size - 1)
+        val randomNumber: Int = Randoms.pickRandomNumber(0, cardConfigByLevel.size - 1)
 
         return cardConfigByLevel[randomNumber]
     }

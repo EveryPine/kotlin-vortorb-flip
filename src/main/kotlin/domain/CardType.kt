@@ -8,9 +8,9 @@ enum class CardType(val factor: Int, val symbol: Char) {
 
     companion object {
         fun of(symbol: Char): CardType {
-            val uppercaseSymbol = symbol.uppercaseChar()
+            val uppercaseSymbol: Char = symbol.uppercaseChar()
 
-            for (type in entries) {
+            for (type: CardType in entries) {
                 if (type.symbol == uppercaseSymbol) {
                     return type
                 }
