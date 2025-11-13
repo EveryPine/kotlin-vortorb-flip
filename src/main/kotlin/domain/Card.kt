@@ -1,7 +1,5 @@
 package domain
 
-import view.OutputView
-
 class Card(
     private val type: CardType,
     private var state: CardState = CardState.NORMAL
@@ -17,14 +15,14 @@ class Card(
 
     fun flip() {
         if (state == CardState.FLIPPED) {
-            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다")
+            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다.")
         }
         state = CardState.FLIPPED
     }
 
     fun markAs(symbol: Char) {
         if (state == CardState.FLIPPED) {
-            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다")
+            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다.")
         }
 
         markType = CardType.of(symbol)
