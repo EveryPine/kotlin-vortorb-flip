@@ -3,7 +3,7 @@ package command
 import domain.Position
 import manager.GameManager
 
-class MarkCommand(private val gameManager: GameManager): Command {
+class MarkCommand(private val gameManager: GameManager) : Command {
 
     private val requiredArgsSize: Int = 2
 

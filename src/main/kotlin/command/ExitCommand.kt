@@ -2,7 +2,7 @@ package command
 
 import manager.GameManager
 
-class ExitCommand(private val gameManager: GameManager): Command {
+class ExitCommand(private val gameManager: GameManager) : Command {
 
     override fun execute(args: List<String>) {
         validate(args)

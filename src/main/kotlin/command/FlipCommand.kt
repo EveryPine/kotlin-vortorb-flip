@@ -3,7 +3,7 @@ package command
 import domain.Position
 import manager.GameManager
 
-class FlipCommand(private val gameManager: GameManager): Command {
+class FlipCommand(private val gameManager: GameManager) : Command {
 
     private val requiredArgsSize: Int = 1
 
