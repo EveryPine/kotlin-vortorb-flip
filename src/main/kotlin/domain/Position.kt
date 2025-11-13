@@ -12,31 +12,35 @@ class Position private constructor(private val row: Char, private val column: In
         private val cache: HashMap<Pair<Char, Int>, Position> = HashMap()
 
         fun of(row: Char, column: Int): Position {
-            validate(row, column)
+            val uppercaseRow = row.uppercaseChar()
 
-            return cache.getOrPut(row to column, { Position(row, column) })
+            validateRow(uppercaseRow)
+            validateColumn(column)
+
+            return cache.getOrPut(uppercaseRow to column, { Position(uppercaseRow, column) })
         }
 
         fun of(position: String): Position {
-            validate(position)
+            validatePosition(position)
             val row: Char = position[0]
             val column: Int = position[1] - '0'
 
-            return cache.getOrPut(row to column, { Position(row, column) })
+            return of(row, column)
         }
 
-        private fun validate(position: String) {
+        private fun validatePosition(position: String) {
             if (position.length != 2) {
                 throw IllegalArgumentException("올바르지 않은 위치 문자열입니다: $position")
             }
-            validate(position[0], position[1] - '0')
         }
 
-        private fun validate(row: Char, column: Int) {
+        private fun validateRow(row: Char) {
             if (row !in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
                 throw IllegalArgumentException("행 위치가 범위를 벗어났습니다: $row")
             }
+        }
 
+        private fun validateColumn(column: Int) {
             if (column !in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
                 throw IllegalArgumentException("열 위치가 범위를 벗어났습니다: $column")
             }
