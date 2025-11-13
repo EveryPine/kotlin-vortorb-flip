@@ -11,5 +11,6 @@ object Constants {
     const val COLUMN_UPPER_BOUND: Int = 5
 
     const val GRID_EDGE_LENGTH: Int = 5
+    const val GRID_CELL_COUNT: Int = GRID_EDGE_LENGTH * GRID_EDGE_LENGTH
     const val ROUND_UPPER_BOUND: Int = 10
 }

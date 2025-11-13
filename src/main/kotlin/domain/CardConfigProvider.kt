@@ -27,12 +27,10 @@ object CardConfigProvider {
                 .stream()
                 .map { Parser.parseInt(it) }
                 .toList()
-            val level = parsed[0]
-            val twoCount = parsed[1]
-            val threeCount = parsed[2]
-            val voltorbCount = parsed[3]
+            val level: Int = parsed[0]
+            val counts: List<Int> = parsed.subList(1, parsed.size)
 
-            cardConfigs[level]!!.add(CardConfig(twoCount, threeCount, voltorbCount))
+            cardConfigs[level]!!.add(CardConfig.of(counts))
         }
 
     }
@@ -41,7 +39,7 @@ object CardConfigProvider {
         validateLevel(level)
 
         val cardConfigByLevel: List<CardConfig> = cardConfigs[level]!!.toList()
-        val randomNumber: Int = Randoms.pickRandomNumber(0, cardConfigByLevel.size - 1)
+        val randomNumber: Int = Randoms.pickRandomNumber(0, cardConfigByLevel.lastIndex)
 
         return cardConfigByLevel[randomNumber]
     }
