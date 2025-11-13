@@ -4,6 +4,7 @@ import domain.Board
 import domain.BoardFactory
 import domain.CardConfig
 import domain.CardConfigProvider
+import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import domain.Position
@@ -55,7 +56,7 @@ class GameManager(
     }
 
     fun isRoundOver(): Boolean {
-        return isGameOver() || (board.isAllTwoFound() && board.isAllThreeFound()) || board.isVoltorbFound()
+        return isGameOver() || (board.isAllFound(CardType.TWO) && board.isAllFound(CardType.THREE)) || board.isVoltorbFound()
     }
 
     fun exitGame() {

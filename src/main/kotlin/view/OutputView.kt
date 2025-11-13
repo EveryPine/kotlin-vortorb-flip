@@ -53,30 +53,39 @@ object OutputView {
 
     private fun printCard(cardDto: CardDto) {
         if (cardDto.state == CardState.NORMAL) {
-            print(String.format("%2s", "?"))
+            print(formatBoardElement("?"))
         }
         if (cardDto.state == CardState.FLIPPED) {
-            print(ConsoleColor.green(String.format("%2s", cardDto.symbol)))
+            print(ConsoleColor.green(formatBoardElement(cardDto.symbol)))
         }
         if (cardDto.state == CardState.MARKED) {
-            print(ConsoleColor.yellow(String.format("%2s", cardDto.markSymbol)))
+            print(ConsoleColor.yellow(formatBoardElement(cardDto.markSymbol)))
         }
         print(" | ")
     }
 
     private fun printHorizontalCardHint(row: Char, boardDto: BoardDto) {
-        print(ConsoleColor.blue(String.format("%2s", boardDto.rowNumberCountMap[row])))
-        println(ConsoleColor.red(String.format("%2s", boardDto.rowVoltorbCountMap[row])))
+        val numberCount: Int = boardDto.rowNumberCountMap[row]!!
+        val voltorbCount: Int = boardDto.rowVoltorbCountMap[row]!!
+
+        print(ConsoleColor.blue(formatBoardElement(numberCount)))
+        println(ConsoleColor.red(formatBoardElement(voltorbCount)))
     }
 
     private fun printVerticalCardHint(boardDto: BoardDto) {
         print("    ")
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            print(ConsoleColor.blue(String.format("%2s   ", boardDto.columnNumberCountMap[column])))
+            val numberCount: Int = boardDto.columnNumberCountMap[column]!!
+
+            print(ConsoleColor.blue(formatBoardElement(numberCount)))
+            print("   ")
         }
         print("\n    ")
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            print(ConsoleColor.red(String.format("%2s   ", boardDto.columnVoltorbCountMap[column])))
+            val voltorbCount: Int = boardDto.columnVoltorbCountMap[column]!!
+
+            print(ConsoleColor.red(formatBoardElement(voltorbCount)))
+            print("   ")
         }
         println()
     }
@@ -128,10 +137,13 @@ object OutputView {
         }
     }
 
-
     fun printGameResult(gameStateDto: GameStateDto) {
         println("게임이 종료되었습니다.")
         println("--- 게임 결과 ---")
         println("누적 코인: ${gameStateDto.totalCoins}개")
+    }
+
+    private fun <T> formatBoardElement(element: T): String {
+        return String.format("%2s", element.toString())
     }
 }

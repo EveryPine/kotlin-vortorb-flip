@@ -133,7 +133,7 @@ class BoardTest {
             val expected: Boolean = true
 
             // when
-            val actual: Boolean = board.isAllTwoFound()
+            val actual: Boolean = board.isAllFound(CardType.TWO)
 
             // then
             assertEquals(expected, actual)
@@ -149,7 +149,7 @@ class BoardTest {
             val expected: Boolean = false
 
             // when
-            val actual: Boolean = board.isAllTwoFound()
+            val actual: Boolean = board.isAllFound(CardType.TWO)
 
             // then
             assertEquals(expected, actual)
@@ -170,7 +170,7 @@ class BoardTest {
             val expected: Boolean = true
 
             // when
-            val actual: Boolean = board.isAllThreeFound()
+            val actual: Boolean = board.isAllFound(CardType.THREE)
 
             // then
             assertEquals(expected, actual)
@@ -186,7 +186,7 @@ class BoardTest {
             val expected: Boolean = false
 
             // when
-            val actual: Boolean = board.isAllThreeFound()
+            val actual: Boolean = board.isAllFound(CardType.THREE)
 
             // then
             assertEquals(expected, actual)

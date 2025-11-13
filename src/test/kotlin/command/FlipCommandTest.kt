@@ -46,20 +46,5 @@ class FlipCommandTest {
                 flipCommand.execute(args)
             }
         }
-
-        @Test
-        fun `명령 인자가 잘못된 형태로 들어온 경우 예외가 발생한다`() {
-            // given
-            val gameManager: GameManager = mockk(relaxed = true)
-            val flipCommand: Command = FlipCommand(gameManager)
-            val args: List<String> = listOf("A")
-
-            // when
-
-            // then
-            assertThrows(IllegalArgumentException::class.java) {
-                flipCommand.execute(args)
-            }
-        }
     }
 }

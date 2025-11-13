@@ -14,26 +14,19 @@ class Card(
     fun getMarkType(): CardType? = markType
 
     fun flip() {
-        if (state == CardState.FLIPPED) {
-            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다.")
-        }
+        checkFlipped()
 
         state = CardState.FLIPPED
     }
 
     fun markAs(symbol: Char) {
-        if (state == CardState.FLIPPED) {
-            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다.")
-        }
-
+        checkFlipped()
         markType = CardType.of(symbol)
         state = CardState.MARKED
     }
 
     fun unmark() {
-        if (state == CardState.FLIPPED) {
-            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다")
-        }
+        checkFlipped()
         if (state == CardState.NORMAL) {
             throw IllegalStateException("입력한 위치에 있는 카드는 마킹되어있지 않은 상태입니다")
         }
@@ -56,6 +49,12 @@ class Card(
 
     fun isFlipped(): Boolean {
         return state == CardState.FLIPPED
+    }
+
+    private fun checkFlipped() {
+        if (isFlipped()) {
+            throw IllegalStateException("입력한 위치에 있는 카드는 이미 뒤집힌 상태입니다")
+        }
     }
 
 }

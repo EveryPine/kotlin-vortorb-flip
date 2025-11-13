@@ -4,6 +4,7 @@ import domain.Board
 import domain.BoardFactory
 import domain.CardConfig
 import domain.CardConfigProvider
+import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import io.mockk.every
@@ -70,8 +71,8 @@ class GameManagerTest {
             val expected = true
 
             // when
-            every { board.isAllTwoFound() } returns true
-            every { board.isAllThreeFound() } returns true
+            every { board.isAllFound(CardType.TWO) } returns true
+            every { board.isAllFound(CardType.THREE) } returns true
             val actual = gameManager.isRoundOver()
 
             // then

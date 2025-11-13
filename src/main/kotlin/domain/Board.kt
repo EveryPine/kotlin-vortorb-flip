@@ -97,23 +97,12 @@ class Board(private val cards: List<Card>) {
         return coins
     }
 
-    fun isAllTwoFound(): Boolean {
+    fun isAllFound(type: CardType): Boolean {
         for (card: Card in cardMap.values) {
-            if (card.isTypeOf(CardType.TWO) && !card.isFlipped()) {
+            if (card.isTypeOf(type) && !card.isFlipped()) {
                 return false
             }
         }
-
-        return true
-    }
-
-    fun isAllThreeFound(): Boolean {
-        for (card: Card in cardMap.values) {
-            if (card.isTypeOf(CardType.THREE) && !card.isFlipped()) {
-                return false
-            }
-        }
-
         return true
     }
 
