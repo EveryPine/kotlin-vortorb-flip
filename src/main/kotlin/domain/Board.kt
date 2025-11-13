@@ -14,8 +14,8 @@ class Board(private val cards: List<Card>) {
     }
 
     private fun mapCardsToPosition() {
-        for (row in ROW_LOWER_BOUND .. ROW_UPPER_BOUND) {
-            for (column in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
+        for (row in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
+            for (column in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
                 val position: Position = Position.of(row, column)
                 cardMap[position] = cards[position.toIndex()]
             }

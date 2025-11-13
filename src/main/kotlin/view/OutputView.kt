@@ -39,9 +39,9 @@ object OutputView {
                 "현재 코인: ${boardDto.roundCoins}개\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
-        for (row: Char in ROW_LOWER_BOUND .. ROW_UPPER_BOUND) {
+        for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
             print("$row | ")
-            for (column: Int in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
+            for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
                 printCard(boardDto.cardMap[Position.of(row, column)]!!)
             }
             printHorizontalCardHint(row, boardDto)
@@ -71,11 +71,11 @@ object OutputView {
 
     private fun printVerticalCardHint(boardDto: BoardDto) {
         print("    ")
-        for (column: Int in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
+        for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
             print(ConsoleColor.blue(String.format("%2s   ", boardDto.columnNumberCountMap[column])))
         }
         print("\n    ")
-        for (column: Int in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
+        for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
             print(ConsoleColor.red(String.format("%2s   ", boardDto.columnVoltorbCountMap[column])))
         }
         println()

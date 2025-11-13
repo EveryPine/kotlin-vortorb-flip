@@ -18,8 +18,8 @@ data class BoardDto(
 ) {
     companion object {
         fun from(board: Board): BoardDto {
-            val rows = (ROW_LOWER_BOUND .. ROW_UPPER_BOUND).toList()
-            val columns = (COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND).toList()
+            val rows = (ROW_LOWER_BOUND..ROW_UPPER_BOUND).toList()
+            val columns = (COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND).toList()
 
             return BoardDto(
                 roundCoins = board.calculateCoins(),
