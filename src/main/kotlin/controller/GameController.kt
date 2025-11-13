@@ -20,8 +20,10 @@ class GameController(
                 input = getValidInput()
                 invokeCommand(input)
             }
-            gameManager.printRoundResult()
-            gameManager.rerollRound()
+            if (!gameManager.isGameOver()) {
+                gameManager.printRoundResult()
+                gameManager.rerollRound()
+            }
         }
         gameManager.printGameResult()
     }
