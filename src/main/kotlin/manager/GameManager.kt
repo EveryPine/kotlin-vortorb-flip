@@ -33,7 +33,7 @@ class GameManager(
 
     fun requestMarkCard(position: String, symbol: Char) {
         board.mark(Position.of(position), symbol)
-        OutputView.printInfoMessage("${position.uppercase()} 카드를 ${symbol}로 마킹했습니다")
+        OutputView.printInfoMessage("${position.uppercase()} 카드를 ${symbol.uppercase()}로 마킹했습니다")
     }
 
     fun requestUnmarkCard(position: String) {
