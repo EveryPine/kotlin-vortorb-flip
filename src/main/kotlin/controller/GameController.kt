@@ -17,14 +17,28 @@ class GameController(
             gameManager.printRoundStartGuide()
             while (!gameManager.isRoundOver()) {
                 gameManager.printGameStatus()
-                OutputView.printCommandGuide()
-                input = InputView.validInput()
+                input = getValidInput()
                 invokeCommand(input)
             }
             gameManager.printRoundResult()
             gameManager.rerollRound()
         }
         gameManager.printGameResult()
+    }
+
+    private fun getValidInput(): String {
+        var input: String? = null
+
+        while (input == null) {
+            try {
+                OutputView.printCommandGuide()
+                input = InputView.validInput()
+            } catch (e: IllegalArgumentException) {
+                OutputView.printInfoMessage(e.message!!)
+            }
+        }
+
+        return input
     }
 
     private fun invokeCommand(input: String) {
