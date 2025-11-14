@@ -10,89 +10,43 @@ import kotlin.test.Test
 class BoardTest {
 
     @Nested
-    @DisplayName("calculateRowNumberCount 메소드는")
-    inner class CalculateRowNumberCount {
+    @DisplayName("calculateRowLineHint 메소드는")
+    inner class CalculateRowLineHint {
 
         @Test
-        fun `행에 있는 모든 숫자의 합을 리턴한다`() {
-            // given
-            val cardOrder = provideCards()
-            val board: Board = Board(cardOrder)
-            val row: Char = 'A'
-            val expected: Int = 7
-
-            // when
-            val actual: Int = board.calculateRowNumberCount(row)
-
-            // then
-            assertEquals(expected, actual)
-        }
-
-    }
-
-    @Nested
-    @DisplayName("calculateColumnNumberCount 메소드는")
-    inner class CalculateColumnNumberCount {
-
-        @Test
-        fun `열에 있는 모든 숫자의 합을 리턴한다`() {
-            // given
-            val cardOrder = provideCards()
-            val board: Board = Board(cardOrder)
-            val column: Int = 1
-            val expected: Int = 6
-
-            // when
-            val actual: Int = board.calculateColumnNumberCount(column)
-
-            // then
-            assertEquals(expected, actual)
-        }
-
-    }
-
-    @Nested
-    @DisplayName("calculateRowVoltorbCount 메소드는")
-    inner class CalculateRowVoltorbCount {
-
-        @Test
-        fun `행에 있는 모든 찌리리공의 개수를 반환한다`() {
+        fun `행의 카드 힌트를 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
             val board: Board = Board(cards)
             val row: Char = 'A'
-            val expected: Int = 2
+            val expected: LineHint = LineHint(7, 2)
 
             // when
-            val actual = board.calculateRowVoltorbCount(row)
+            val actual: LineHint = board.calculateRowLineHint(row)
 
             // then
             assertEquals(expected, actual)
-
         }
-
     }
 
     @Nested
-    @DisplayName("calculateColumnVoltorbCount 메소드는")
-    inner class CalculateColumnVoltorbCount {
+    @DisplayName("calculateColumnLineHint 메소드는")
+    inner class CalculateColumnLineHint {
 
         @Test
-        fun `열에 있는 모든 찌리리공의 개수를 반환한다`() {
+        fun `열의 카드 힌트를 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
             val board: Board = Board(cards)
             val column: Int = 1
-            val expected: Int = 2
+            val expected: LineHint = LineHint(6, 2)
 
             // when
-            val actual = board.calculateColumnVoltorbCount(column)
+            val actual: LineHint = board.calculateColumnLineHint(column)
 
             // then
             assertEquals(expected, actual)
-
         }
-
     }
 
     @Nested

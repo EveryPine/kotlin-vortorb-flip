@@ -1,20 +1,18 @@
 package dto
 
 import domain.Board
-import domain.Card
 import domain.Constants.COLUMN_LOWER_BOUND
 import domain.Constants.COLUMN_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
+import domain.LineHint
 import domain.Position
 
 data class BoardDto(
     val roundCoins: Int,
     val cardMap: HashMap<Position, CardDto>,
-    val rowNumberCountMap: HashMap<Char, Int>,
-    val columnNumberCountMap: HashMap<Int, Int>,
-    val rowVoltorbCountMap: HashMap<Char, Int>,
-    val columnVoltorbCountMap: HashMap<Int, Int>,
+    val rowLineHintMap: HashMap<Char, LineHint>,
+    val columnLineHintMap: HashMap<Int, LineHint>,
 ) {
     companion object {
         fun from(board: Board): BoardDto {
@@ -25,13 +23,9 @@ data class BoardDto(
                 roundCoins = board.calculateCoins(),
                 cardMap = board.getCardMap().mapValues { CardDto.from(it.value) }
                     .toMap(HashMap()),
-                rowNumberCountMap = rows.associateWith { board.calculateRowNumberCount(it) }
+                rowLineHintMap = rows.associateWith { board.calculateRowLineHint(it)}
                     .toMap(HashMap()),
-                columnNumberCountMap = columns.associateWith { board.calculateColumnNumberCount(it) }
-                    .toMap(HashMap()),
-                rowVoltorbCountMap = rows.associateWith { board.calculateRowVoltorbCount(it)}
-                    .toMap(HashMap()),
-                columnVoltorbCountMap = columns.associateWith { board.calculateColumnVoltorbCount(it) }
+                columnLineHintMap = columns.associateWith { board.calculateColumnLineHint(it) }
                     .toMap(HashMap())
             )
         }

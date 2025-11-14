@@ -8,6 +8,7 @@ import domain.Constants.MIN_LEVEL
 import domain.Constants.ROUND_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
+import domain.LineHint
 import domain.Position
 import dto.BoardDto
 import dto.CardDto
@@ -44,10 +45,10 @@ object OutputView {
             for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
                 printCard(boardDto.cardMap[Position.of(row, column)]!!)
             }
-            printHorizontalCardHint(row, boardDto)
+            printRowLineHint(row, boardDto)
         }
         println("  +----+----+----+----+----+")
-        printVerticalCardHint(boardDto)
+        printColumnLineHints(boardDto)
         println()
     }
 
@@ -64,25 +65,24 @@ object OutputView {
         print(" | ")
     }
 
-    private fun printHorizontalCardHint(row: Char, boardDto: BoardDto) {
-        val numberCount: Int = boardDto.rowNumberCountMap[row]!!
-        val voltorbCount: Int = boardDto.rowVoltorbCountMap[row]!!
+    private fun printRowLineHint(row: Char, boardDto: BoardDto) {
+        val lineHint: LineHint = boardDto.rowLineHintMap[row]!!
 
-        print(ConsoleColor.blue(formatBoardElement(numberCount)))
-        println(ConsoleColor.red(formatBoardElement(voltorbCount)))
+        print(ConsoleColor.blue(formatBoardElement(lineHint.numberSum)))
+        println(ConsoleColor.red(formatBoardElement(lineHint.voltorbCount)))
     }
 
-    private fun printVerticalCardHint(boardDto: BoardDto) {
+    private fun printColumnLineHints(boardDto: BoardDto) {
         print("    ")
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            val numberCount: Int = boardDto.columnNumberCountMap[column]!!
+            val numberCount: Int = boardDto.columnLineHintMap[column]!!.numberSum
 
             print(ConsoleColor.blue(formatBoardElement(numberCount)))
             print("   ")
         }
         print("\n    ")
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            val voltorbCount: Int = boardDto.columnVoltorbCountMap[column]!!
+            val voltorbCount: Int = boardDto.columnLineHintMap[column]!!.voltorbCount
 
             print(ConsoleColor.red(formatBoardElement(voltorbCount)))
             print("   ")

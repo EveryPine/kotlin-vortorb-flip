@@ -36,53 +36,36 @@ class Board(private val cards: List<Card>) {
         cardMap[position]!!.unmark()
     }
 
-    fun calculateRowNumberCount(row: Char): Int {
-        var count: Int = 0
+    fun calculateRowLineHint(row: Char): LineHint {
+        var numberSum: Int = 0
+        var voltorbCount: Int = 0
 
-        for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            val card: Card = cardMap[Position.of(row, column)]!!
-            count = card.addTo(count)
-        }
-
-        return count
-    }
-
-    fun calculateColumnNumberCount(column: Int): Int {
-        var count: Int = 0
-
-        for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
-            val card: Card = cardMap[Position.of(row, column)]!!
-            count = card.addTo(count)
-        }
-
-        return count
-    }
-
-    fun calculateRowVoltorbCount(row: Char): Int {
-        var count: Int = 0
-
-        for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
+        for (column in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
             val card: Card = cardMap[Position.of(row, column)]!!
 
+            numberSum = card.addTo(numberSum)
             if (card.isTypeOf(CardType.VOLTORB)) {
-                count++
+                voltorbCount++
             }
         }
 
-        return count
+        return LineHint(numberSum, voltorbCount)
     }
 
-    fun calculateColumnVoltorbCount(column: Int): Int {
-        var count: Int = 0
+    fun calculateColumnLineHint(column: Int): LineHint {
+        var numberSum: Int = 0
+        var voltorbCount: Int = 0
 
-        for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
+        for (row in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
             val card: Card = cardMap[Position.of(row, column)]!!
+
+            numberSum = card.addTo(numberSum)
             if (card.isTypeOf(CardType.VOLTORB)) {
-                count++
+                voltorbCount++
             }
         }
 
-        return count
+        return LineHint(numberSum, voltorbCount)
     }
 
     fun calculateCoins(): Int {
