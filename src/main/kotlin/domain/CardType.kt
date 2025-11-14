@@ -15,7 +15,7 @@ enum class CardType(val factor: Int, val symbol: Char) {
                     return type
                 }
             }
-            throw IllegalArgumentException("알 수 없는 카드 유형 심볼입니다")
+            throw IllegalArgumentException("${symbol}은 알 수 없는 카드 심볼입니다")
         }
     }
 }

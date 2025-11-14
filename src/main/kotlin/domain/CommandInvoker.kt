@@ -18,11 +18,11 @@ class CommandInvoker(private val receiver: GameManager) {
     fun setCommand(input: String) {
         val parsed: List<String> = Parser.parseToCommand(input)
 
-        command = choiceCommand(parsed.first())
+        command = selectCommand(parsed.first())
         args = parsed.drop(1)
     }
 
-    private fun choiceCommand(command: String): Command {
+    private fun selectCommand(command: String): Command {
         if (command == "flip") {
             return cache.getOrPut(command) { FlipCommand(receiver) }
         }

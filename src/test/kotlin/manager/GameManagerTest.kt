@@ -1,16 +1,12 @@
 package manager
 
 import domain.Board
-import domain.BoardFactory
-import domain.CardConfig
-import domain.CardConfigProvider
 import domain.CardType
 import domain.GameState
 import domain.GameStatus
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
-import io.mockk.unmockkObject
 import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.*
@@ -31,7 +27,7 @@ class GameManagerTest {
             val gameState = mockk<GameState>(relaxed = true)
             val board = mockk<Board>(relaxed = true)
             val gameManager = GameManager(gameState, board)
-            every { gameState.isFinalRound() } returns true
+            every { gameState.isFinalRoundOver() } returns true
             val expected = true
 
             // when

@@ -10,10 +10,10 @@ class Board(private val cards: List<Card>) {
     private val cardMap: HashMap<Position, Card> = HashMap()
 
     init {
-        mapCardsToPosition()
+        mapCards()
     }
 
-    private fun mapCardsToPosition() {
+    private fun mapCards() {
         for (row in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
             for (column in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
                 val position: Position = Position.of(row, column)

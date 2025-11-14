@@ -17,7 +17,7 @@ class GameController(
             gameManager.printRoundStartGuide()
             while (!gameManager.isRoundOver()) {
                 gameManager.printGameStatus()
-                input = getValidInput()
+                input = requestValidInput()
                 invokeCommand(input)
             }
             if (!gameManager.isGameOver()) {
@@ -28,7 +28,7 @@ class GameController(
         gameManager.printGameResult()
     }
 
-    private fun getValidInput(): String {
+    private fun requestValidInput(): String {
         var input: String? = null
 
         while (input == null) {

@@ -21,7 +21,7 @@ class GameManager(
     private var gameStatus: GameStatus = GameStatus.RUNNING
 
     companion object {
-        internal fun createBoard(gameState: GameState): Board {
+        fun createBoard(gameState: GameState): Board {
             val cardConfig: CardConfig = CardConfigProvider.provide(gameState.getLevel())
 
             return BoardFactory.create(cardConfig, true)
@@ -52,7 +52,7 @@ class GameManager(
     }
 
     fun isGameOver(): Boolean {
-        return gameState.isFinalRound() || (gameStatus == GameStatus.EXITED)
+        return gameState.isFinalRoundOver() || (gameStatus == GameStatus.EXITED)
     }
 
     fun isRoundOver(): Boolean {

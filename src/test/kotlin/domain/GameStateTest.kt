@@ -87,7 +87,7 @@ class GameStateTest {
     }
 
     @Nested
-    @DisplayName("isFinalRound 메소드는")
+    @DisplayName("isFinalRoundOver 메소드는")
     inner class IsFinalRound {
 
         @Test
@@ -97,7 +97,7 @@ class GameStateTest {
             val expected = true
 
             // when
-            val actual = gameState.isFinalRound()
+            val actual = gameState.isFinalRoundOver()
 
             // then
             assertEquals(expected, actual)
@@ -110,7 +110,7 @@ class GameStateTest {
             val expected = false
 
             // when
-            val actual = gameState.isFinalRound()
+            val actual = gameState.isFinalRoundOver()
 
             // then
             assertEquals(expected, actual)

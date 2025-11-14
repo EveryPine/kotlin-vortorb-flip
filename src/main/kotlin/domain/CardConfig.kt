@@ -9,7 +9,7 @@ class CardConfig private constructor(
 ) {
 
     private val oneCount: Int =
-        Constants.GRID_CELL_COUNT - (twoCount + threeCount + voltorbCount)
+        GRID_CELL_COUNT - (twoCount + threeCount + voltorbCount)
 
     companion object {
         fun of(counts: List<Int>): CardConfig {
@@ -36,10 +36,10 @@ class CardConfig private constructor(
     fun toMutableList(): MutableList<Card> {
         val cards: MutableList<Card> = mutableListOf()
 
-        cards.addAll(Array(oneCount, { Card(CardType.ONE) }))
-        cards.addAll(Array(twoCount, { Card(CardType.TWO) }))
-        cards.addAll(Array(threeCount, { Card(CardType.THREE) }))
-        cards.addAll(Array(voltorbCount, { Card(CardType.VOLTORB) }))
+        cards.addAll(Array(oneCount) { Card(CardType.ONE) })
+        cards.addAll(Array(twoCount) { Card(CardType.TWO) })
+        cards.addAll(Array(threeCount) { Card(CardType.THREE) })
+        cards.addAll(Array(voltorbCount) { Card(CardType.VOLTORB) })
 
         return cards
     }

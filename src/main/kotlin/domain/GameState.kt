@@ -3,7 +3,6 @@ package domain
 import domain.Constants.MAX_LEVEL
 import domain.Constants.MIN_LEVEL
 import domain.Constants.ROUND_UPPER_BOUND
-import dto.GameStateDto
 import kotlin.math.max
 import kotlin.math.min
 
@@ -36,7 +35,7 @@ class GameState(
         level = min(level + 1, MAX_LEVEL)
     }
 
-    fun isFinalRound(): Boolean {
+    fun isFinalRoundOver(): Boolean {
         return round > ROUND_UPPER_BOUND
     }
 
