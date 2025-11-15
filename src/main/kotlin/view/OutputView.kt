@@ -39,7 +39,7 @@ object OutputView {
 
     fun printGameStatus(gameStatusDto: GameStatusDto) {
         println("\n라운드: ${gameStatusDto.round} | " +
-                "레벨: ${gameStatusDto.level} | " +
+                "레벨: ${gameStatusDto.level.value} | " +
                 "누적 코인: ${gameStatusDto.cumulativeCoins}개 | " +
                 "현재 코인: ${gameStatusDto.currentCoints}개\n")
         println("     1    2    3    4    5")
@@ -121,19 +121,19 @@ object OutputView {
     }
 
     private fun printLevelChangedGuide(roundResultDto: RoundResultDto) {
-        if (roundResultDto.voltorbFound && roundResultDto.level != MIN_LEVEL) {
+        if (roundResultDto.voltorbFound && roundResultDto.level.value != MIN_LEVEL) {
             println("레벨이 1 내려갔습니다.")
             return
         }
-        if (!roundResultDto.voltorbFound && roundResultDto.level != MAX_LEVEL) {
+        if (!roundResultDto.voltorbFound && roundResultDto.level.value != MAX_LEVEL) {
             println("레벨이 1 올라갔습니다.")
             return
         }
-        if (roundResultDto.voltorbFound && roundResultDto.level == MIN_LEVEL) {
+        if (roundResultDto.voltorbFound && roundResultDto.level.value == MIN_LEVEL) {
             println("레벨이 더 이상 내려가지 않습니다.")
             return
         }
-        if (!roundResultDto.voltorbFound && roundResultDto.level == MAX_LEVEL) {
+        if (!roundResultDto.voltorbFound && roundResultDto.level.value == MAX_LEVEL) {
             println("레벨이 더 이상 올라가지 않습니다.")
             return
         }

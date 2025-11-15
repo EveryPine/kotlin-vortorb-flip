@@ -13,8 +13,6 @@ import utils.Parser
 object CommandManager {
 
     private val commandMap: HashMap<String, Command> = hashMapOf()
-    private var command: Command? = null
-    private var args: List<String>? = null
 
     fun initCommandMap(gameState: GameState, board: Board) {
         commandMap["flip"] = FlipCommand(board)

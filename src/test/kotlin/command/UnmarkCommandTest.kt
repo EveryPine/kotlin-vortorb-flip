@@ -1,8 +1,6 @@
 package command
 
-import com.sun.tools.javac.tree.TreeInfo.args
 import domain.Board
-import domain.GameState
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Assertions.*

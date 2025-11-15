@@ -1,11 +1,8 @@
 package command
 
-import com.sun.tools.javac.tree.TreeInfo.args
 import domain.Board
 import domain.GameState
-import io.mockk.Runs
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verify

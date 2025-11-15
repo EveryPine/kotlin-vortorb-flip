@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.EnumSource
-import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
 import kotlin.test.assertNotEquals
 
@@ -23,11 +21,12 @@ class BoardTest {
         @Test
         fun `다음 라운드를 위해 카드맵을 초기화한다`() {
             // given
-            val board: Board = Board(1)
+            val level: Level = Level.of(1)
+            val board: Board = Board(level)
             val oldCardMap: HashMap<Position, Card> = HashMap(board.getCardMap())
 
             // when
-            board.reset(1)
+            board.reset(level)
             val newCardMap: HashMap<Position, Card> = HashMap(board.getCardMap())
 
             // then
@@ -42,11 +41,12 @@ class BoardTest {
         @Test
         fun `행의 카드 힌트를 반환한다`() {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
 
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
 
             val row: Char = 'A'
             val expected: LineHint = LineHint(7, 2)
@@ -66,11 +66,12 @@ class BoardTest {
         @Test
         fun `열의 카드 힌트를 반환한다`() {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
 
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
 
             val column: Int = 1
             val expected: LineHint = LineHint(6, 2)
@@ -90,6 +91,7 @@ class BoardTest {
         @Test
         fun `보드판의 모든 숫자 카드의 곱을 반환한다`() {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
                 Position.of('A', 3),
@@ -97,9 +99,9 @@ class BoardTest {
                 Position.of('C', 1),
                 Position.of('D', 1),
             ))
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
             val expected: Int = 2 * 2 * 3 * 3
 
             // when
@@ -118,12 +120,13 @@ class BoardTest {
         @EnumSource(value = CardType::class)
         fun `모든 요청한 유형의 카드가 뒤집어졌을 경우 true를 반환한다`(type: CardType) {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             flipAll(cards, null)
 
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
 
             val expected: Boolean = true
 
@@ -139,6 +142,7 @@ class BoardTest {
         @EnumSource(value = CardType::class)
         fun `적어도 하나의 요청한 유형의 카드가 뒤집어지지 않았을 경우 false를 반환한다`(type: CardType) {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
                 Position.of('A', 1),
@@ -146,9 +150,9 @@ class BoardTest {
                 Position.of('A', 3),
                 Position.of('B', 2)))
 
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
 
             val expected: Boolean = false
 
@@ -168,12 +172,13 @@ class BoardTest {
         @Test
         fun `적어도 하나의 찌리리공 카드가 뒤집어졌을 경우 true를 반환한다`() {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             cards[Position.of('A', 3).toIndex()].flip()
 
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
 
             val expected: Boolean = true
 
@@ -188,11 +193,12 @@ class BoardTest {
         @Test
         fun `모든 찌리리공 카드가 뒤집어지지 않은 경우 false를 반환한다`() {
             // given
+            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
 
-            val board: Board = spyk(Board(1), recordPrivateCalls = true)
-            every { board["getCards"](any<Int>()) } returns cards
-            board.reset(1)
+            val board: Board = spyk(Board(level), recordPrivateCalls = true)
+            every { board["getCards"](any<Level>()) } returns cards
+            board.reset(level)
 
             val expected: Boolean = false
 

@@ -12,7 +12,7 @@ import kotlin.collections.toMap
 
 data class GameStatusDto(
     val round: Int,
-    val level: Int,
+    val level: LevelDto,
     val cumulativeCoins: Int,
     val currentCoints: Int,
     val cardMap: HashMap<Position, CardDto>,
@@ -28,7 +28,7 @@ data class GameStatusDto(
 
             return GameStatusDto(
                 round = gameState.getRound(),
-                level = gameState.getLevel(),
+                level = gameState.getLevel().toDto(),
                 cumulativeCoins = gameState.getCoins(),
                 currentCoints = board.calculateCoins(),
                 cardMap = board.getCardMap()

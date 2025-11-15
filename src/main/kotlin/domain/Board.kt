@@ -5,7 +5,7 @@ import domain.Constants.COLUMN_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
 
-class Board(level: Int) {
+class Board(level: Level) {
 
     private val cardMap: HashMap<Position, Card> = HashMap()
 
@@ -13,12 +13,12 @@ class Board(level: Int) {
         reset(level)
     }
 
-    fun reset(level: Int) {
+    fun reset(level: Level) {
         val cards: List<Card> = getCards(level)
         mapCards(cards)
     }
 
-    private fun getCards(level: Int): List<Card> {
+    private fun getCards(level: Level): List<Card> {
         val cardConfig: CardConfig = CardConfigProvider.provide(level)
 
         return cardConfig.toList()

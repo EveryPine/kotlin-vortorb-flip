@@ -8,7 +8,7 @@ import utils.Randoms
 
 object CardConfigProvider {
 
-    private val cardConfigs: HashMap<Int, MutableList<CardConfig>> = HashMap()
+    private val cardConfigListMap: HashMap<Level, MutableList<CardConfig>> = HashMap()
 
     init {
         initCardConfigs()
@@ -18,8 +18,8 @@ object CardConfigProvider {
         val absoluteFilePath: String = "src/main/resources/card_config.csv"
         val configBody: List<String> = CSVReader.readBody(absoluteFilePath)
 
-        for (level: Int in MIN_LEVEL..MAX_LEVEL) {
-            cardConfigs[level] = mutableListOf()
+        for (value: Int in MIN_LEVEL..MAX_LEVEL) {
+            cardConfigListMap[Level.of(value)] = mutableListOf()
         }
 
         for (line: String in configBody) {
@@ -27,26 +27,18 @@ object CardConfigProvider {
                 .stream()
                 .map { Parser.parseInt(it) }
                 .toList()
-            val level: Int = parsed[0]
+            val level: Level = Level.of(parsed[0])
             val counts: List<Int> = parsed.subList(1, parsed.size)
 
-            cardConfigs[level]!!.add(CardConfig.of(counts))
+            cardConfigListMap[level]!!.add(CardConfig.of(counts))
         }
 
     }
 
-    fun provide(level: Int): CardConfig {
-        validateLevel(level)
-
-        val cardConfigByLevel: List<CardConfig> = cardConfigs[level]!!.toList()
+    fun provide(level: Level): CardConfig {
+        val cardConfigByLevel: List<CardConfig> = cardConfigListMap[level]!!.toList()
         val randomNumber: Int = Randoms.pickRandomNumber(0, cardConfigByLevel.lastIndex)
 
         return cardConfigByLevel[randomNumber]
-    }
-
-    private fun validateLevel(level: Int) {
-        if (level !in MIN_LEVEL..MAX_LEVEL) {
-            throw IllegalArgumentException("카드 구성 요청이 가능한 레벨의 범위를 벗어났습니다.")
-        }
     }
 }

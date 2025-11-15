@@ -5,7 +5,7 @@ import domain.GameState
 
 data class RoundResultDto(
     val round: Int,
-    val level: Int,
+    val level: LevelDto,
     val obtainedCoins: Int,
     val voltorbFound: Boolean
 ) {
@@ -14,7 +14,7 @@ data class RoundResultDto(
         fun from(gameState: GameState, board: Board): RoundResultDto {
             return RoundResultDto(
                 round = gameState.getRound(),
-                level = gameState.getLevel(),
+                level = gameState.getLevel().toDto(),
                 obtainedCoins = board.calculateCoins(),
                 voltorbFound = board.isVoltorbFound()
             )

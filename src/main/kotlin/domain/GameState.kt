@@ -1,15 +1,11 @@
 package domain
 
-import domain.Constants.MAX_LEVEL
-import domain.Constants.MIN_LEVEL
 import domain.Constants.ROUND_UPPER_BOUND
-import kotlin.math.max
-import kotlin.math.min
 
 class GameState(
     private var coins: Int = 0,
     private var round: Int = 1,
-    private var level: Int = 1,
+    private var level: Level = Level.of(1),
     private var status: GameStatus = GameStatus.RUNNING
 ) {
 
@@ -17,23 +13,18 @@ class GameState(
 
     fun getRound(): Int = round
 
-    fun getLevel(): Int = level
+    fun getLevel(): Level = level
 
     fun addCoins(coins: Int) {
         this.coins += coins
     }
 
-    fun nextRound() {
-        round++
+    fun advanceLevel(voltorbFound: Boolean) {
+        level.next(voltorbFound)
     }
 
-    fun nextLevel(voltorbFound: Boolean) {
-        if (voltorbFound) {
-            level = max(level - 1, MIN_LEVEL)
-            return
-        }
-
-        level = min(level + 1, MAX_LEVEL)
+    fun nextRound() {
+        round++
     }
 
     fun exit() {
