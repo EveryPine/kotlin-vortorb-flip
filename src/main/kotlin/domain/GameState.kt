@@ -7,9 +7,10 @@ import kotlin.math.max
 import kotlin.math.min
 
 class GameState(
-    private var coins: Int,
-    private var round: Int,
-    private var level: Int
+    private var coins: Int = 0,
+    private var round: Int = 1,
+    private var level: Int = 1,
+    private var status: GameStatus = GameStatus.RUNNING
 ) {
 
     fun getCoins(): Int = coins
@@ -35,8 +36,16 @@ class GameState(
         level = min(level + 1, MAX_LEVEL)
     }
 
+    fun exit() {
+        status = GameStatus.EXITED
+    }
+
     fun isFinalRoundOver(): Boolean {
         return round > ROUND_UPPER_BOUND
+    }
+
+    fun isExited(): Boolean {
+        return status == GameStatus.EXITED
     }
 
 }

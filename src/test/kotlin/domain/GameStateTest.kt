@@ -87,8 +87,27 @@ class GameStateTest {
     }
 
     @Nested
+    @DisplayName("exit 메소드는")
+    inner class Exit {
+
+        @Test
+        fun `게임을 바로 종료할 수 있는 상태로 변경한다`() {
+            // given
+            val gameState: GameState = GameState(300, 5, 3)
+            val expected: GameStatus = GameStatus.EXITED
+
+            // when
+            gameState.exit()
+
+            // then
+            assertThat(gameState).extracting("status")
+                .isEqualTo(expected)
+        }
+    }
+
+    @Nested
     @DisplayName("isFinalRoundOver 메소드는")
-    inner class IsFinalRound {
+    inner class IsFinalRoundOver {
 
         @Test
         fun `최종 라운드가 종료되었을 경우 true를 반환한다`() {
@@ -111,6 +130,37 @@ class GameStateTest {
 
             // when
             val actual = gameState.isFinalRoundOver()
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Nested
+    @DisplayName("isExited 메소드는")
+    inner class IsExited {
+
+        @Test
+        fun `게임이 종료된 경우 true를 반환한다`() {
+            // given
+            val gameState: GameState = GameState(300, 5, 3, GameStatus.EXITED)
+            val expected: Boolean = true
+
+            // when
+            val actual: Boolean = gameState.isExited()
+
+            // then
+            assertEquals(expected, actual)
+        }
+
+        @Test
+        fun `게임이 종료되지 않은 경우 false를 반환한다`() {
+            // given
+            val gameState: GameState = GameState(300, 5, 3)
+            val expected: Boolean = false
+
+            // when
+            val actual: Boolean = gameState.isExited()
 
             // then
             assertEquals(expected, actual)

@@ -33,13 +33,17 @@ class CardConfig private constructor(
         }
     }
 
-    fun toMutableList(): MutableList<Card> {
+    fun toList(random: Boolean = true): List<Card> {
         val cards: MutableList<Card> = mutableListOf()
 
         cards.addAll(Array(oneCount) { Card(CardType.ONE) })
         cards.addAll(Array(twoCount) { Card(CardType.TWO) })
         cards.addAll(Array(threeCount) { Card(CardType.THREE) })
         cards.addAll(Array(voltorbCount) { Card(CardType.VOLTORB) })
+
+        if (random) {
+            cards.shuffle()
+        }
 
         return cards
     }

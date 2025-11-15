@@ -1,9 +1,15 @@
 package command
 
 import com.sun.tools.javac.tree.TreeInfo.args
+import domain.Board
+import domain.GameState
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.verify
-import manager.GameManager
+import manager.PrintManager
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -17,18 +23,22 @@ class StatusCommandTest {
     inner class Execute {
 
         @Test
-        fun `수신자에게 게임 상태 출력을 요청한다`() {
+        fun `PrintManager에게 게임 상태 출력을 요청한다`() {
             // given
-            val gameManager = mockk<GameManager>(relaxed = true)
-            val statusCommand: Command = StatusCommand(gameManager)
+            val gameState: GameState = mockk<GameState>(relaxed = true)
+            val board: Board = mockk(relaxed = true)
+            val statusCommand: Command = StatusCommand(gameState, board)
             val args: List<String> = emptyList()
+
+            mockkObject(PrintManager)
+            every { PrintManager.printGameStatus(any(), any()) } returns Unit
 
             // when
             statusCommand.execute(args)
 
             // then
             verify(exactly = 1) {
-                gameManager.requestPrintStatus()
+                PrintManager.printGameStatus(any(), any())
             }
 
         }
@@ -36,8 +46,9 @@ class StatusCommandTest {
         @Test
         fun `명령어에 인자가 포함되어 있는 경우 예외가 발생한다`() {
             // given
-            val gameManager = mockk<GameManager>(relaxed = true)
-            val statusCommand: Command = StatusCommand(gameManager)
+            val gameState: GameState = mockk<GameState>(relaxed = true)
+            val board: Board = mockk(relaxed = true)
+            val statusCommand: Command = StatusCommand(gameState, board)
             val args: List<String> = listOf("wrong_arg")
 
             // when

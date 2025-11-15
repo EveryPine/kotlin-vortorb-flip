@@ -1,14 +1,18 @@
 package command
 
+import domain.Board
 import domain.Position
-import manager.GameManager
+import manager.PrintManager
 
-class FlipCommand(private val gameManager: GameManager) : Command {
+class FlipCommand(private val board: Board) : Command {
 
     private val requiredArgsSize: Int = 1
 
     override fun execute(args: List<String>) {
         validateArgsSize(args, requiredArgsSize)
-        gameManager.requestFlipCard(args[0])
+
+        val position: Position = Position.of(args[0])
+        board.flipOf(position)
+        PrintManager.printInfoMessage("$position 카드를 뒤집었습니다.")
     }
 }

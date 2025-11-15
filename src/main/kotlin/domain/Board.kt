@@ -5,15 +5,26 @@ import domain.Constants.COLUMN_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
 
-class Board(private val cards: List<Card>) {
+class Board(level: Int) {
 
     private val cardMap: HashMap<Position, Card> = HashMap()
 
     init {
-        mapCards()
+        reset(level)
     }
 
-    private fun mapCards() {
+    fun reset(level: Int) {
+        val cards: List<Card> = getCards(level)
+        mapCards(cards)
+    }
+
+    private fun getCards(level: Int): List<Card> {
+        val cardConfig: CardConfig = CardConfigProvider.provide(level)
+
+        return cardConfig.toList()
+    }
+
+    private fun mapCards(cards: List<Card>) {
         for (row in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
             for (column in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
                 val position: Position = Position.of(row, column)
@@ -71,7 +82,7 @@ class Board(private val cards: List<Card>) {
     fun calculateCoins(): Int {
         var coins: Int = 1
 
-        for (card: Card in cards) {
+        for (card: Card in cardMap.values) {
             if (card.isFlipped()) {
                 coins = card.multiplyTo(coins)
             }

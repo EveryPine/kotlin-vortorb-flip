@@ -47,6 +47,10 @@ class Position private constructor(private val row: Char, private val column: In
         }
     }
 
+    override fun toString(): String {
+        return "$row$column".uppercase()
+    }
+
     fun toIndex(): Int {
         return (row - ROW_LOWER_BOUND) * (COLUMN_UPPER_BOUND - COLUMN_LOWER_BOUND + 1) +
                 (column - COLUMN_LOWER_BOUND)

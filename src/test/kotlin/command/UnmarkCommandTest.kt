@@ -1,9 +1,10 @@
 package command
 
 import com.sun.tools.javac.tree.TreeInfo.args
+import domain.Board
+import domain.GameState
 import io.mockk.mockk
 import io.mockk.verify
-import manager.GameManager
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -19,8 +20,8 @@ class UnmarkCommandTest {
         @Test
         fun `수신자에게 카드 마킹 해제를 요청한다`() {
             // given
-            val gameManager = mockk<GameManager>(relaxed = true)
-            val unmarkCommand: Command = UnmarkCommand(gameManager)
+            val board: Board = mockk(relaxed = true)
+            val unmarkCommand: Command = UnmarkCommand(board)
             val args = listOf("A1")
 
             // when
@@ -28,15 +29,15 @@ class UnmarkCommandTest {
 
             // then
             verify(exactly = 1) {
-                gameManager.requestUnmarkCard(any())
+                board.unmark(any())
             }
         }
 
         @Test
         fun `명령 인자가 1개가 아닌 경우 예외가 발생한다`() {
             // given
-            val gameManager = mockk<GameManager>(relaxed = true)
-            val unmarkCommand: Command = UnmarkCommand(gameManager)
+            val board: Board = mockk(relaxed = true)
+            val unmarkCommand: Command = UnmarkCommand(board)
             val args = listOf("A1", "A2")
 
             // when
