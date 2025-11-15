@@ -10,12 +10,11 @@ import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
 import domain.LineHint
 import domain.Position
-import dto.BoardDto
 import dto.CardDto
 import dto.GameResultDto
-import dto.GameStateDto
 import dto.GameStatusDto
 import dto.LineHintDto
+import dto.RoundDto
 import dto.RoundResultDto
 import utils.ConsoleColor
 
@@ -25,8 +24,8 @@ object OutputView {
         println("찌리리공 뒤집기 게임을 시작합니다!")
     }
 
-    fun printRoundStartGuide(gameStateDto: GameStateDto) {
-        println("${gameStateDto.round} 라운드가 시작되었습니다.")
+    fun printRoundStartGuide(roundDto: RoundDto) {
+        println("${roundDto.round} 라운드가 시작되었습니다.")
     }
 
     fun printCommandGuide() {

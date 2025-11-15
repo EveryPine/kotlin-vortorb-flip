@@ -3,8 +3,8 @@ package manager
 import domain.Board
 import domain.GameState
 import dto.GameResultDto
-import dto.GameStateDto
 import dto.GameStatusDto
+import dto.RoundDto
 import dto.RoundResultDto
 import view.OutputView
 
@@ -15,7 +15,7 @@ object PrintManager {
     }
 
     fun printRoundStartGuide(gameState: GameState) {
-        OutputView.printRoundStartGuide(GameStateDto.from(gameState))
+        OutputView.printRoundStartGuide(RoundDto.from(gameState))
     }
 
     fun printCommandGuide() {
