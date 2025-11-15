@@ -12,7 +12,10 @@ import domain.LineHint
 import domain.Position
 import dto.BoardDto
 import dto.CardDto
+import dto.GameResultDto
 import dto.GameStateDto
+import dto.GameStatusDto
+import dto.LineHintDto
 import dto.RoundResultDto
 import utils.ConsoleColor
 
@@ -35,20 +38,22 @@ object OutputView {
         println("[INFO] $message")
     }
 
-    fun printGameStatus(gameStateDto: GameStateDto, boardDto: BoardDto) {
-        println("\n라운드: ${gameStateDto.round} | 레벨: ${gameStateDto.level} | 누적 코인: ${gameStateDto.totalCoins}개 | " +
-                "현재 코인: ${boardDto.roundCoins}개\n")
+    fun printGameStatus(gameStatusDto: GameStatusDto) {
+        println("\n라운드: ${gameStatusDto.round} | " +
+                "레벨: ${gameStatusDto.level} | " +
+                "누적 코인: ${gameStatusDto.cumulativeCoins}개 | " +
+                "현재 코인: ${gameStatusDto.currentCoints}개\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
         for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
             print("$row | ")
             for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-                printCard(boardDto.cardMap[Position.of(row, column)]!!)
+                printCard(gameStatusDto.cardMap[Position.of(row, column)]!!)
             }
-            printRowLineHint(row, boardDto)
+            printRowLineHint(gameStatusDto.rowLineHintMap[row]!!)
         }
         println("  +----+----+----+----+----+")
-        printColumnLineHints(boardDto)
+        printColumnLineHints(gameStatusDto.columnLineHintMap)
         println()
     }
 
@@ -65,24 +70,22 @@ object OutputView {
         print(" | ")
     }
 
-    private fun printRowLineHint(row: Char, boardDto: BoardDto) {
-        val lineHint: LineHint = boardDto.rowLineHintMap[row]!!
-
-        print(ConsoleColor.blue(formatBoardElement(lineHint.numberSum)))
-        println(ConsoleColor.red(formatBoardElement(lineHint.voltorbCount)))
+    private fun printRowLineHint(lineHintDto: LineHintDto) {
+        print(ConsoleColor.blue(formatBoardElement(lineHintDto.numberSum)))
+        println(ConsoleColor.red(formatBoardElement(lineHintDto.voltorbCount)))
     }
 
-    private fun printColumnLineHints(boardDto: BoardDto) {
+    private fun printColumnLineHints(lineHintMap: HashMap<Int, LineHintDto>) {
         print("    ")
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            val numberCount: Int = boardDto.columnLineHintMap[column]!!.numberSum
+            val numberCount: Int = lineHintMap[column]!!.numberSum
 
             print(ConsoleColor.blue(formatBoardElement(numberCount)))
             print("   ")
         }
         print("\n    ")
         for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-            val voltorbCount: Int = boardDto.columnLineHintMap[column]!!.voltorbCount
+            val voltorbCount: Int = lineHintMap[column]!!.voltorbCount
 
             print(ConsoleColor.red(formatBoardElement(voltorbCount)))
             print("   ")
@@ -137,10 +140,10 @@ object OutputView {
         }
     }
 
-    fun printGameResult(gameStateDto: GameStateDto) {
+    fun printGameResult(gameResultDto: GameResultDto) {
         println("게임이 종료되었습니다.")
         println("--- 게임 결과 ---")
-        println("누적 코인: ${gameStateDto.totalCoins}개")
+        println("누적 코인: ${gameResultDto.cumulativeCoins}개")
     }
 
     private fun <T> formatBoardElement(element: T): String {

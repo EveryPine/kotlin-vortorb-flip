@@ -2,8 +2,9 @@ package manager
 
 import domain.Board
 import domain.GameState
-import dto.BoardDto
+import dto.GameResultDto
 import dto.GameStateDto
+import dto.GameStatusDto
 import dto.RoundResultDto
 import view.OutputView
 
@@ -26,7 +27,7 @@ object PrintManager {
     }
 
     fun printGameStatus(gameState: GameState, board: Board) {
-        OutputView.printGameStatus(GameStateDto.from(gameState), BoardDto.from(board))
+        OutputView.printGameStatus(GameStatusDto.of(gameState, board))
     }
 
     fun printRoundResult(gameState: GameState, board: Board) {
@@ -34,6 +35,6 @@ object PrintManager {
     }
 
     fun printGameResult(gameState: GameState) {
-        OutputView.printGameResult(GameStateDto.from(gameState))
+        OutputView.printGameResult(GameResultDto.from(gameState))
     }
 }
