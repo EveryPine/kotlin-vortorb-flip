@@ -15,7 +15,7 @@ object PrintManager {
     }
 
     fun printRoundStartGuide(gameState: GameState) {
-        OutputView.printRoundStartGuide(RoundDto.from(gameState))
+        OutputView.printRoundStartGuide(gameState.getRound().toDto())
     }
 
     fun printCommandGuide() {

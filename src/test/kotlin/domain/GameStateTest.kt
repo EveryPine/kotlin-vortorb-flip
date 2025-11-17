@@ -20,8 +20,9 @@ class GameStateTest {
         fun `현재 게임 코인에 라운드에서 획득한 코인을 추가한다`() {
             // given
             val cumulativeCoin: Coin = Coin.of(300)
+            val round: Round = Round.of(5)
             val level: Level = Level.of(3)
-            val gameState = GameState(cumulativeCoin, 5, level)
+            val gameState = GameState(cumulativeCoin, round, level)
             val roundCoins: Coin = Coin.of(54)
             val expected: Int = 354
 
@@ -37,27 +38,6 @@ class GameStateTest {
     }
 
     @Nested
-    @DisplayName("nextRound 메소드는")
-    inner class NextRound {
-
-        @Test
-        fun `라운드를 1 증가시킨다`() {
-            // given
-            val cumulativeCoin: Coin = Coin.of(300)
-            val level: Level = Level.of(1)
-            val gameState = GameState(cumulativeCoin, 5, level)
-            val expected: Int = 6
-
-            // when
-            gameState.nextRound()
-
-            // then
-            assertThat(gameState).extracting("round")
-                .isEqualTo(expected)
-        }
-    }
-
-    @Nested
     @DisplayName("advanceLevel 메소드는")
     inner class AdvanceLevel {
 
@@ -65,10 +45,11 @@ class GameStateTest {
         fun `레벨 업데이트를 요청한다`() {
             // given
             val cumulativeCoin: Coin = Coin.of(300)
+            val round: Round = Round.of(5)
             val level: Level = mockk(relaxed = true)
             every { level.next(any()) } returns Unit
 
-            val gameState = GameState(cumulativeCoin, 5, level)
+            val gameState = GameState(cumulativeCoin, round, level)
             val expected: Int = 6
 
             // when
@@ -82,6 +63,29 @@ class GameStateTest {
     }
 
     @Nested
+    @DisplayName("advanceRound 메소드는")
+    inner class AdvanceRound {
+
+        @Test
+        fun `라운드 업데이트를 요청한다`() {
+            // given
+            val cumulativeCoin: Coin = Coin.of(300)
+            val round: Round = Round.of(5)
+            val level: Level = Level.of(1)
+            val gameState = GameState(cumulativeCoin, round, level)
+            val expected: Round = Round.of(6)
+
+            // when
+            gameState.advanceRound()
+
+            // then
+            assertThat(gameState).extracting("round")
+                .usingRecursiveComparison()
+                .isEqualTo(expected)
+        }
+    }
+
+    @Nested
     @DisplayName("exit 메소드는")
     inner class Exit {
 
@@ -89,8 +93,9 @@ class GameStateTest {
         fun `게임을 바로 종료할 수 있는 상태로 변경한다`() {
             // given
             val cumulativeCoin: Coin = Coin.of(300)
+            val round: Round = Round.of(5)
             val level: Level = Level.of(3)
-            val gameState: GameState = GameState(cumulativeCoin, 5, level)
+            val gameState: GameState = GameState(cumulativeCoin, round, level)
             val expected: GameStatus = GameStatus.EXITED
 
             // when
@@ -103,41 +108,6 @@ class GameStateTest {
     }
 
     @Nested
-    @DisplayName("isFinalRoundOver 메소드는")
-    inner class IsFinalRoundOver {
-
-        @Test
-        fun `최종 라운드가 종료되었을 경우 true를 반환한다`() {
-            // given
-            val cumulativeCoin: Coin = Coin.of(300)
-            val level: Level = Level.of(3)
-            val gameState = GameState(cumulativeCoin, 11, level)
-            val expected = true
-
-            // when
-            val actual = gameState.isFinalRoundOver()
-
-            // then
-            assertEquals(expected, actual)
-        }
-
-        @Test
-        fun `최종 라운드가 종료되지 않았을 경우 false를 반환한다`() {
-            // given
-            val cumulativeCoin: Coin = Coin.of(300)
-            val level: Level = Level.of(3)
-            val gameState = GameState(cumulativeCoin, 4, level)
-            val expected = false
-
-            // when
-            val actual = gameState.isFinalRoundOver()
-
-            // then
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Nested
     @DisplayName("isExited 메소드는")
     inner class IsExited {
 
@@ -145,8 +115,9 @@ class GameStateTest {
         fun `게임이 종료된 경우 true를 반환한다`() {
             // given
             val cumulativeCoin: Coin = Coin.of(300)
+            val round: Round = Round.of(5)
             val level: Level = Level.of(3)
-            val gameState: GameState = GameState(cumulativeCoin, 5, level, GameStatus.EXITED)
+            val gameState: GameState = GameState(cumulativeCoin, round, level, GameStatus.EXITED)
             val expected: Boolean = true
 
             // when
@@ -160,8 +131,9 @@ class GameStateTest {
         fun `게임이 종료되지 않은 경우 false를 반환한다`() {
             // given
             val cumulativeCoin: Coin = Coin.of(300)
+            val round: Round = Round.of(5)
             val level: Level = Level.of(3)
-            val gameState: GameState = GameState(cumulativeCoin, 5, level)
+            val gameState: GameState = GameState(cumulativeCoin, round, level)
             val expected: Boolean = false
 
             // when

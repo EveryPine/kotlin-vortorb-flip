@@ -1,17 +1,13 @@
 package dto
 
-import domain.GameState
-
 data class RoundDto(
-    val round: Int
+    val number: Int
 ) {
 
     companion object {
 
-        fun from(gameState: GameState): RoundDto {
-            return RoundDto(
-                round = gameState.getRound()
-            )
+        fun of(number: Int): RoundDto {
+            return RoundDto(number)
         }
     }
 }

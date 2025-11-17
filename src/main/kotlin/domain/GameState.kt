@@ -1,17 +1,15 @@
 package domain
 
-import domain.Constants.ROUND_UPPER_BOUND
-
 class GameState(
     private val cumulativeCoin: Coin = Coin.of(0),
-    private var round: Int = 1,
+    private var round: Round = Round.of(1),
     private val level: Level = Level.of(1),
     private var status: GameStatus = GameStatus.RUNNING
 ) {
 
     fun getCumulativeCoin(): Coin = cumulativeCoin
 
-    fun getRound(): Int = round
+    fun getRound(): Round = round
 
     fun getLevel(): Level = level
 
@@ -23,16 +21,20 @@ class GameState(
         level.next(voltorbFound)
     }
 
-    fun nextRound() {
-        round++
+    fun advanceRound() {
+        round.next()
     }
 
     fun exit() {
         status = GameStatus.EXITED
     }
 
+    fun isFinalRound(): Boolean {
+        return round.isFinal()
+    }
+
     fun isFinalRoundOver(): Boolean {
-        return round > ROUND_UPPER_BOUND
+        return round.isOver()
     }
 
     fun isExited(): Boolean {

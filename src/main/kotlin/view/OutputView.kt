@@ -5,10 +5,8 @@ import domain.Constants.COLUMN_LOWER_BOUND
 import domain.Constants.COLUMN_UPPER_BOUND
 import domain.Constants.MAX_LEVEL
 import domain.Constants.MIN_LEVEL
-import domain.Constants.ROUND_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
-import domain.LineHint
 import domain.Position
 import dto.CardDto
 import dto.GameResultDto
@@ -25,7 +23,7 @@ object OutputView {
     }
 
     fun printRoundStartGuide(roundDto: RoundDto) {
-        println("${roundDto.round} 라운드가 시작되었습니다.")
+        println("${roundDto.number} 라운드가 시작되었습니다.")
     }
 
     fun printCommandGuide() {
@@ -38,7 +36,7 @@ object OutputView {
     }
 
     fun printGameStatus(gameStatusDto: GameStatusDto) {
-        println("\n라운드: ${gameStatusDto.round} | " +
+        println("\n라운드: ${gameStatusDto.round.number} | " +
                 "레벨: ${gameStatusDto.level.value} | " +
                 "누적 코인: ${gameStatusDto.cumulativeCoin.value}개 | " +
                 "현재 코인: ${gameStatusDto.currentCoin.value}개\n")
@@ -95,9 +93,9 @@ object OutputView {
     fun printRoundResult(roundResultDto: RoundResultDto) {
         println()
         printRoundOverReason(roundResultDto)
-        print("${roundResultDto.round} 라운드가 종료되었습니다. ")
+        print("${roundResultDto.round.number} 라운드가 종료되었습니다. ")
         printObtainedCoins(roundResultDto)
-        if (roundResultDto.round != ROUND_UPPER_BOUND) {
+        if (!roundResultDto.finalRound) {
             printLevelChangedGuide(roundResultDto)
         }
         println()
