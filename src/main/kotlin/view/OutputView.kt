@@ -41,7 +41,7 @@ object OutputView {
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
         for (row: Row in Row.all) {
-            print("$row | ")
+            print("${row.value} | ")
             for (column: Column in Column.all) {
                 printCard(gameStatusDto.cardMap[Position.of(row, column)]!!)
             }

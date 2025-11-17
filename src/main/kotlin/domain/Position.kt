@@ -36,4 +36,9 @@ data class Position(private val row: Row, private val column: Column) {
     fun toIndex(): Int {
         return row.toIndex() * Column.TOTAL_COUNT + column.toIndex()
     }
+
+    override fun toString(): String {
+        return row.toString() + column.toString()
+    }
+
 }

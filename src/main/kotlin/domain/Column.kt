@@ -34,4 +34,8 @@ data class Column(
     fun toIndex(): Int {
         return value - COLUMN_LOWER_BOUND
     }
+
+    override fun toString(): String {
+        return value.toString()
+    }
 }
