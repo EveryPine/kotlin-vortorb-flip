@@ -1,42 +1,47 @@
 package controller
 
-import domain.CommandInvoker
-import manager.GameManager
+import domain.Board
+import domain.GameState
+import manager.CommandManager
+import manager.GameStatusManager
+import manager.PrintManager
 import view.InputView
-import view.OutputView
 
 class GameController(
-    private val gameManager: GameManager,
-    private val commandInvoker: CommandInvoker
+    private val gameState: GameState,
+    private var board: Board
 ) {
 
     fun run() {
         var input: String
-        gameManager.printGameStartGuide()
-        while (!gameManager.isGameOver()) {
-            gameManager.printRoundStartGuide()
-            while (!gameManager.isRoundOver()) {
-                gameManager.printGameStatus()
-                input = getValidInput()
+
+        CommandManager.initCommandMap(gameState, board)
+        PrintManager.printGameStartGuide()
+        while (!GameStatusManager.isGameOver(gameState)) {
+            PrintManager.printRoundStartGuide(gameState)
+            while (!GameStatusManager.isRoundOver(gameState, board)) {
+                PrintManager.printGameStatus(gameState, board)
+                input = requestValidInput()
                 invokeCommand(input)
             }
-            if (!gameManager.isGameOver()) {
-                gameManager.printRoundResult()
-                gameManager.rerollRound()
+            if (!GameStatusManager.isGameOver(gameState)) {
+                PrintManager.printRoundResult(gameState, board)
+                GameStatusManager.advanceRound(gameState, board)
+                board = GameStatusManager.resetBoard(gameState)
             }
         }
-        gameManager.printGameResult()
+        PrintManager.printGameResult(gameState)
     }
 
-    private fun getValidInput(): String {
+    private fun requestValidInput(): String {
         var input: String? = null
 
         while (input == null) {
             try {
-                OutputView.printCommandGuide()
+                PrintManager.printCommandGuide()
                 input = InputView.validInput()
             } catch (e: IllegalArgumentException) {
-                OutputView.printInfoMessage(e.message!!)
+                PrintManager.printInfoMessage(e.message!!)
             }
         }
 
@@ -45,12 +50,11 @@ class GameController(
 
     private fun invokeCommand(input: String) {
         try {
-            commandInvoker.setCommand(input)
-            commandInvoker.execute()
+            CommandManager.execute(input)
         } catch (e: IllegalArgumentException) {
-            OutputView.printInfoMessage(e.message!!)
+            PrintManager.printInfoMessage(e.message!!)
         } catch (e: IllegalStateException) {
-            OutputView.printInfoMessage(e.message!!)
+            PrintManager.printInfoMessage(e.message!!)
         }
     }
 }

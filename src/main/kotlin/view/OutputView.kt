@@ -1,17 +1,16 @@
 package view
 
 import domain.CardState
-import domain.Constants.COLUMN_LOWER_BOUND
-import domain.Constants.COLUMN_UPPER_BOUND
+import domain.Column
 import domain.Constants.MAX_LEVEL
 import domain.Constants.MIN_LEVEL
-import domain.Constants.ROUND_UPPER_BOUND
-import domain.Constants.ROW_LOWER_BOUND
-import domain.Constants.ROW_UPPER_BOUND
 import domain.Position
-import dto.BoardDto
+import domain.Row
 import dto.CardDto
-import dto.GameStateDto
+import dto.GameResultDto
+import dto.GameStatusDto
+import dto.LineHintDto
+import dto.RoundDto
 import dto.RoundResultDto
 import utils.ConsoleColor
 
@@ -21,8 +20,8 @@ object OutputView {
         println("찌리리공 뒤집기 게임을 시작합니다!")
     }
 
-    fun printRoundStartGuide(gameStateDto: GameStateDto) {
-        println("${gameStateDto.round} 라운드가 시작되었습니다.")
+    fun printRoundStartGuide(roundDto: RoundDto) {
+        println("${roundDto.number} 라운드가 시작되었습니다.")
     }
 
     fun printCommandGuide() {
@@ -34,49 +33,57 @@ object OutputView {
         println("[INFO] $message")
     }
 
-    fun printGameStatus(gameStateDto: GameStateDto, boardDto: BoardDto) {
-        println("\n라운드: ${gameStateDto.round} | 레벨: ${gameStateDto.level} | 누적 코인: ${gameStateDto.totalCoins}개 | " +
-                "현재 코인: ${boardDto.roundCoins}개\n")
+    fun printGameStatus(gameStatusDto: GameStatusDto) {
+        println("\n라운드: ${gameStatusDto.round.number} | " +
+                "레벨: ${gameStatusDto.level.value} | " +
+                "누적 코인: ${gameStatusDto.cumulativeCoin.value}개 | " +
+                "현재 코인: ${gameStatusDto.currentCoin.value}개\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
-        for (row: Char in ROW_LOWER_BOUND .. ROW_UPPER_BOUND) {
-            print("$row | ")
-            for (column: Int in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
-                printCard(boardDto.cardMap[Position.of(row, column)]!!)
+        for (row: Row in Row.all) {
+            print("${row.value} | ")
+            for (column: Column in Column.all) {
+                printCard(gameStatusDto.cardMap[Position.of(row, column)]!!)
             }
-            printHorizontalCardHint(row, boardDto)
+            printRowLineHint(gameStatusDto.rowLineHintMap[row]!!)
         }
         println("  +----+----+----+----+----+")
-        printVerticalCardHint(boardDto)
+        printColumnLineHints(gameStatusDto.columnLineHintMap)
         println()
     }
 
     private fun printCard(cardDto: CardDto) {
         if (cardDto.state == CardState.NORMAL) {
-            print(String.format("%2s", "?"))
+            print(formatBoardElement("?"))
         }
         if (cardDto.state == CardState.FLIPPED) {
-            print(ConsoleColor.green(String.format("%2s", cardDto.symbol)))
+            print(ConsoleColor.green(formatBoardElement(cardDto.symbol)))
         }
         if (cardDto.state == CardState.MARKED) {
-            print(ConsoleColor.yellow(String.format("%2s", cardDto.markSymbol)))
+            print(ConsoleColor.yellow(formatBoardElement(cardDto.markSymbol)))
         }
         print(" | ")
     }
 
-    private fun printHorizontalCardHint(row: Char, boardDto: BoardDto) {
-        print(ConsoleColor.blue(String.format("%2s", boardDto.rowNumberCountMap[row])))
-        println(ConsoleColor.red(String.format("%2s", boardDto.rowVoltorbCountMap[row])))
+    private fun printRowLineHint(lineHintDto: LineHintDto) {
+        print(ConsoleColor.blue(formatBoardElement(lineHintDto.numberSum)))
+        println(ConsoleColor.red(formatBoardElement(lineHintDto.voltorbCount)))
     }
 
-    private fun printVerticalCardHint(boardDto: BoardDto) {
+    private fun printColumnLineHints(lineHintMap: HashMap<Column, LineHintDto>) {
         print("    ")
-        for (column: Int in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
-            print(ConsoleColor.blue(String.format("%2s   ", boardDto.columnNumberCountMap[column])))
+        for (column: Column in Column.all) {
+            val numberCount: Int = lineHintMap[column]!!.numberSum
+
+            print(ConsoleColor.blue(formatBoardElement(numberCount)))
+            print("   ")
         }
         print("\n    ")
-        for (column: Int in COLUMN_LOWER_BOUND .. COLUMN_UPPER_BOUND) {
-            print(ConsoleColor.red(String.format("%2s   ", boardDto.columnVoltorbCountMap[column])))
+        for (column: Column in Column.all) {
+            val voltorbCount: Int = lineHintMap[column]!!.voltorbCount
+
+            print(ConsoleColor.red(formatBoardElement(voltorbCount)))
+            print("   ")
         }
         println()
     }
@@ -84,9 +91,9 @@ object OutputView {
     fun printRoundResult(roundResultDto: RoundResultDto) {
         println()
         printRoundOverReason(roundResultDto)
-        print("${roundResultDto.round} 라운드가 종료되었습니다. ")
+        print("${roundResultDto.round.number} 라운드가 종료되었습니다. ")
         printObtainedCoins(roundResultDto)
-        if (roundResultDto.round != ROUND_UPPER_BOUND) {
+        if (!roundResultDto.finalRound) {
             printLevelChangedGuide(roundResultDto)
         }
         println()
@@ -102,7 +109,7 @@ object OutputView {
 
     private fun printObtainedCoins(roundResultDto: RoundResultDto) {
         if (!roundResultDto.voltorbFound) {
-            println("이번 라운드에서 코인 ${roundResultDto.obtainedCoins}개를 획득했습니다.")
+            println("이번 라운드에서 코인 ${roundResultDto.obtainedCoin.value}개를 획득했습니다.")
         }
         if (roundResultDto.voltorbFound) {
             println("이번 라운드에서는 코인을 획득하지 못했습니다.")
@@ -110,28 +117,31 @@ object OutputView {
     }
 
     private fun printLevelChangedGuide(roundResultDto: RoundResultDto) {
-        if (roundResultDto.voltorbFound && roundResultDto.level != MIN_LEVEL) {
+        if (roundResultDto.voltorbFound && roundResultDto.level.value != MIN_LEVEL) {
             println("레벨이 1 내려갔습니다.")
             return
         }
-        if (!roundResultDto.voltorbFound && roundResultDto.level != MAX_LEVEL) {
+        if (!roundResultDto.voltorbFound && roundResultDto.level.value != MAX_LEVEL) {
             println("레벨이 1 올라갔습니다.")
             return
         }
-        if (roundResultDto.voltorbFound && roundResultDto.level == MIN_LEVEL) {
+        if (roundResultDto.voltorbFound && roundResultDto.level.value == MIN_LEVEL) {
             println("레벨이 더 이상 내려가지 않습니다.")
             return
         }
-        if (!roundResultDto.voltorbFound && roundResultDto.level == MAX_LEVEL) {
+        if (!roundResultDto.voltorbFound && roundResultDto.level.value == MAX_LEVEL) {
             println("레벨이 더 이상 올라가지 않습니다.")
             return
         }
     }
 
-
-    fun printGameResult(gameStateDto: GameStateDto) {
+    fun printGameResult(gameResultDto: GameResultDto) {
         println("게임이 종료되었습니다.")
         println("--- 게임 결과 ---")
-        println("누적 코인: ${gameStateDto.totalCoins}개")
+        println("누적 코인: ${gameResultDto.cumulativeCoin.value}개")
+    }
+
+    private fun <T> formatBoardElement(element: T): String {
+        return String.format("%2s", element.toString())
     }
 }

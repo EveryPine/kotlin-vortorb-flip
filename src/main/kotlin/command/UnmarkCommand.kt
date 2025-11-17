@@ -1,21 +1,18 @@
 package command
 
+import domain.Board
 import domain.Position
-import manager.GameManager
+import manager.PrintManager
 
-class UnmarkCommand(private val gameManager: GameManager): Command {
+class UnmarkCommand(private val board: Board) : Command {
 
     private val requiredArgsSize: Int = 1
 
     override fun execute(args: List<String>) {
-        validate(args)
-        val position = args[0]
-        gameManager.requestUnmarkCard(position)
-    }
+        validateArgsSize(args, requiredArgsSize)
 
-    private fun validate(args: List<String>) {
-        if (args.size != requiredArgsSize) {
-            throw IllegalArgumentException("unmark 명령 인자의 개수가 올바르지 않습니다.")
-        }
+        val position: Position = Position.of(args[0])
+        board.unmark(position)
+        PrintManager.printInfoMessage("$position 카드 마킹을 해제했습니다.")
     }
 }

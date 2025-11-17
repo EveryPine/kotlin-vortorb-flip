@@ -1,22 +1,20 @@
 package command
 
+import domain.Board
 import domain.Position
-import manager.GameManager
+import manager.PrintManager
 
-class MarkCommand(private val gameManager: GameManager): Command {
+class MarkCommand(private val board: Board) : Command {
 
     private val requiredArgsSize: Int = 2
 
     override fun execute(args: List<String>) {
-        validate(args)
-        val position = args[0]
-        val symbol = args[1].single()
-        gameManager.requestMarkCard(position, symbol)
-    }
+        validateArgsSize(args, requiredArgsSize)
 
-    private fun validate(args: List<String>) {
-        if (args.size != requiredArgsSize) {
-            throw IllegalArgumentException("mark 명령 인자의 개수가 올바르지 않습니다.")
-        }
+        val position: Position = Position.of(args[0])
+        val symbol: Char = args[1].single()
+
+        board.mark(position, symbol)
+        PrintManager.printInfoMessage("$position 카드를 ${symbol.uppercase()}로 마킹했습니다.")
     }
 }

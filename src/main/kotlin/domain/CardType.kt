@@ -8,14 +8,14 @@ enum class CardType(val factor: Int, val symbol: Char) {
 
     companion object {
         fun of(symbol: Char): CardType {
-            val uppercaseSymbol = symbol.uppercaseChar()
+            val uppercaseSymbol: Char = symbol.uppercaseChar()
 
-            for (type in entries) {
+            for (type: CardType in entries) {
                 if (type.symbol == uppercaseSymbol) {
                     return type
                 }
             }
-            throw IllegalArgumentException("알 수 없는 카드 유형 심볼입니다")
+            throw IllegalArgumentException("${symbol}은 알 수 없는 카드 심볼입니다")
         }
     }
 }

@@ -7,8 +7,8 @@ object CSVReader {
 
     fun readBody(absoluteFilePath: String): List<String> {
         try {
-            val file = File(absoluteFilePath)
-            val lines = file.readLines()
+            val file: File = File(absoluteFilePath)
+            val lines: List<String> = file.readLines()
 
             return lines.drop(1)
         } catch (e: IOException) {

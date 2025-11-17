@@ -1,9 +1,8 @@
 package command
 
-import io.mockk.every
+import domain.Board
 import io.mockk.mockk
 import io.mockk.verify
-import manager.GameManager
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -19,9 +18,8 @@ class MarkCommandTest {
         @Test
         fun `수신자에게 카드 마킹을 요청한다`() {
             // given
-            val gameManager: GameManager = mockk<GameManager>(relaxed = true)
-
-            val markCommand = MarkCommand(gameManager)
+            val board: Board = mockk<Board>(relaxed = true)
+            val markCommand = MarkCommand(board)
             val args = listOf("A1", "1")
 
             // when
@@ -29,15 +27,15 @@ class MarkCommandTest {
 
             // then
             verify(exactly = 1) {
-                gameManager.requestMarkCard(any(), any())
+                board.mark(any(), any())
             }
         }
 
         @Test
         fun `명령 인자가 2개가 아닌 경우 예외가 발생한다`() {
             // given
-            val gameManager: GameManager = mockk<GameManager>(relaxed = true)
-            val markCommand = MarkCommand(gameManager)
+            val board: Board = mockk<Board>(relaxed = true)
+            val markCommand = MarkCommand(board)
             val args = listOf("A1", "1", "2")
 
             // when

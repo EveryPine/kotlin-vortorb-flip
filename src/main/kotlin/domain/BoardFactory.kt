@@ -1,14 +1,29 @@
 package domain
 
+import domain.Constants.GRID_CELL_COUNT
+
 object BoardFactory {
 
-    fun create(cardConfig: CardConfig, random: Boolean): Board {
-        val cards: MutableList<Card> = cardConfig.toMutableList()
+    fun create(cards: List<Card>): Board {
+        validateCardsSize(cards)
+        val cardMap: Map<Position, Card> = mapCards(cards)
 
-        if (random) {
-            cards.shuffle()
+        return Board(cardMap)
+    }
+
+    private fun validateCardsSize(cards: List<Card>) {
+        if (cards.size != GRID_CELL_COUNT) {
+            throw IllegalArgumentException("카드 개수는 ${GRID_CELL_COUNT}개여야 합니다.")
+        }
+    }
+
+    private fun mapCards(cards: List<Card>): HashMap<Position, Card> {
+        val cardMap: HashMap<Position, Card> = HashMap()
+
+        for (position: Position in Position.all) {
+            cardMap[position] = cards[position.toIndex()]
         }
 
-        return Board(cards)
+        return cardMap
     }
 }

@@ -2,8 +2,8 @@ package utils
 
 object Parser {
 
-    private const val CARD_CONFIG_DELIMITER = ","
-    private const val COMMAND_DELIMITER = " "
+    private const val CARD_CONFIG_DELIMITER: String = ","
+    private const val COMMAND_DELIMITER: String = " "
 
     fun parseToCardConfig(string: String): List<String> {
         validateDelimiter(string, CARD_CONFIG_DELIMITER)

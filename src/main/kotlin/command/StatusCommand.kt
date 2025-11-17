@@ -1,17 +1,19 @@
 package command
 
-import manager.GameManager
+import domain.Board
+import domain.GameState
+import manager.PrintManager
 
-class StatusCommand(private val gameManager: GameManager): Command {
+class StatusCommand(
+    private val gameState: GameState,
+    private val board: Board
+) : Command {
+
+    private val requiredArgsSize: Int = 0
 
     override fun execute(args: List<String>) {
-        validate(args)
-        gameManager.requestPrintStatus()
-    }
+        validateArgsSize(args, requiredArgsSize)
 
-    private fun validate(args: List<String>) {
-        if (args.isNotEmpty()) {
-            throw IllegalArgumentException("status 명령어는 인자를 받을 수 없습니다")
-        }
+        PrintManager.printGameStatus(gameState, board)
     }
 }

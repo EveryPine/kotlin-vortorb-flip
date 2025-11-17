@@ -1,192 +1,154 @@
 package domain
 
 import domain.Constants.GRID_EDGE_LENGTH
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import kotlin.test.Test
 
 @DisplayName("Board 클래스의")
-class BoardTest {
+open class BoardTest {
 
     @Nested
-    @DisplayName("calculateRowNumberCount 메소드는")
-    inner class CalculateRowNumberCount {
+    @DisplayName("init 블록은")
+    inner class Init {
 
         @Test
-        fun `행에 있는 모든 숫자의 합을 리턴한다`() {
-            // given
-            val cardOrder = provideCards()
-            val board: Board = Board(cardOrder)
-            val row: Char = 'A'
-            val expected: Int = 7
-
-            // when
-            val actual: Int = board.calculateRowNumberCount(row)
-
-            // then
-            assertEquals(expected, actual)
-        }
-
-    }
-
-    @Nested
-    @DisplayName("calculateColumnNumberCount 메소드는")
-    inner class CalculateColumnNumberCount {
-
-        @Test
-        fun `열에 있는 모든 숫자의 합을 리턴한다`() {
-            // given
-            val cardOrder = provideCards()
-            val board: Board = Board(cardOrder)
-            val column: Int = 1
-            val expected: Int = 6
-
-            // when
-            val actual: Int = board.calculateColumnNumberCount(column)
-
-            // then
-            assertEquals(expected, actual)
-        }
-
-    }
-
-    @Nested
-    @DisplayName("calculateRowVoltorbCount 메소드는")
-    inner class CalculateRowVoltorbCount {
-
-        @Test
-        fun `행에 있는 모든 찌리리공의 개수를 반환한다`() {
+        fun `모든 보드판 셀에 카드가 존재하는지 검증한다`() {
             // given
             val cards: List<Card> = provideCards()
-            val board: Board = Board(cards)
-            val row: Char = 'A'
-            val expected: Int = 2
 
             // when
-            val actual = board.calculateRowVoltorbCount(row)
 
             // then
-            assertEquals(expected, actual)
-
+            assertDoesNotThrow {
+                BoardFactory.create(cards)
+            }
         }
 
-    }
-
-    @Nested
-    @DisplayName("calculateColumnVoltorbCount 메소드는")
-    inner class CalculateColumnVoltorbCount {
-
         @Test
-        fun `열에 있는 모든 찌리리공의 개수를 반환한다`() {
+        fun `어떤 한 셀에 카드가 없는 경우 예외가 발생한다`() {
             // given
-            val cards: List<Card> = provideCards()
-            val board: Board = Board(cards)
-            val column: Int = 1
-            val expected: Int = 2
+            val cards: MutableList<Card> = provideCards().toMutableList()
+            cards.removeAt(0)
 
             // when
-            val actual = board.calculateColumnVoltorbCount(column)
 
             // then
-            assertEquals(expected, actual)
-
+            assertThrows(IllegalArgumentException::class.java) {
+                BoardFactory.create(cards)
+            }
         }
-
     }
 
     @Nested
-    @DisplayName("calculateCoins 메소드는")
-    inner class CalculateCoins {
+    @DisplayName("calculateRowLineHint 메소드는")
+    inner class CalculateRowLineHint {
 
         @Test
-        fun `보드판의 모든 숫자 카드의 곱을 반환한다`() {
+        fun `행의 카드 힌트를 반환한다`() {
+            // given
+            val board: Board = BoardFactory.create(provideCards())
+            val row: Row = Row.of('A')
+            val expected: LineHint = LineHint(7, 2)
+
+            // when
+            val actual: LineHint = board.calculateRowLineHint(row)
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Nested
+    @DisplayName("calculateColumnLineHint 메소드는")
+    inner class CalculateColumnLineHint {
+
+        @Test
+        fun `열의 카드 힌트를 반환한다`() {
+            // given
+            val board: Board = BoardFactory.create(provideCards())
+            val column: Column = Column.of(1)
+            val expected: LineHint = LineHint(6, 2)
+
+            // when
+            val actual: LineHint = board.calculateColumnLineHint(column)
+
+            // then
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Nested
+    @DisplayName("calculateObtainedCoin 메소드는")
+    inner class CalculateEarnedCoin {
+
+        @Test
+        fun `획득한 코인을 계산하여 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
-                Position.of('A', 3),
-                Position.of('A', 4),
-                Position.of('C', 1),
-                Position.of('D', 1),
+                Position.of(Row.of('A'), Column.of(3)),
+                Position.of(Row.of('A'), Column.of(4)),
+                Position.of(Row.of('C'), Column.of(1)),
+                Position.of(Row.of('D'), Column.of(1)),
             ))
-            val board: Board = Board(cards)
-            val expected: Int = 2 * 2 * 3 * 3
+            val board: Board = BoardFactory.create(cards)
+            val expected: Coin = Coin.of(2 * 2 * 3 * 3)
 
             // when
-            val actual: Int = board.calculateCoins()
+            val actual: Coin = board.calculateObtainedCoin()
 
             // then
-            assertEquals(expected, actual)
+            assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(expected)
         }
     }
 
     @Nested
-    @DisplayName("isAllTwoFound 메소드는")
-    inner class IsAllTwoFound {
+    @DisplayName("isAllFound 메소드는")
+    inner class IsAllFound {
 
-        @Test
-        fun `모든 숫자 2 카드가 뒤집어졌을 경우 true를 반환한다`() {
+        @ParameterizedTest
+        @EnumSource(value = CardType::class)
+        fun `모든 요청한 유형의 카드가 뒤집어졌을 경우 true를 반환한다`(type: CardType) {
             // given
             val cards: List<Card> = provideCards()
             flipAll(cards, null)
-            val board = Board(cards)
+
+            val board: Board = BoardFactory.create(cards)
             val expected: Boolean = true
 
             // when
-            val actual: Boolean = board.isAllTwoFound()
+            val actual: Boolean = board.isAllFound(type)
 
             // then
             assertEquals(expected, actual)
 
         }
 
-        @Test
-        fun `적어도 하나의 숫자 2 카드가 뒤집어지지 않았을 경우 false를 반환한다`() {
+        @ParameterizedTest
+        @EnumSource(value = CardType::class)
+        fun `적어도 하나의 요청한 유형의 카드가 뒤집어지지 않았을 경우 false를 반환한다`(type: CardType) {
             // given
             val cards: List<Card> = provideCards()
-            flipAll(cards, listOf(Position.of('A', 1)))
-            val board = Board(cards)
+            flipAll(cards, listOf(
+                Position.of("A1"),
+                Position.of("A2"),
+                Position.of("A3"),
+                Position.of("B2"))
+            )
+
+            val board: Board = BoardFactory.create(cards)
             val expected: Boolean = false
 
             // when
-            val actual: Boolean = board.isAllTwoFound()
-
-            // then
-            assertEquals(expected, actual)
-        }
-
-    }
-
-    @Nested
-    @DisplayName("isAllThreeFound 메소드는")
-    inner class IsAllThreeFound {
-
-        @Test
-        fun `모든 숫자 3 카드가 뒤집어졌을 경우 true를 반환한다`() {
-            // given
-            val cards: List<Card> = provideCards()
-            flipAll(cards, null)
-            val board = Board(cards)
-            val expected: Boolean = true
-
-            // when
-            val actual: Boolean = board.isAllThreeFound()
-
-            // then
-            assertEquals(expected, actual)
-
-        }
-
-        @Test
-        fun `적어도 하나의 숫자 3 카드가 뒤집어지지 않았을 경우 false를 반환한다`() {
-            // given
-            val cards: List<Card> = provideCards()
-            flipAll(cards, listOf(Position.of('A', 2)))
-            val board = Board(cards)
-            val expected: Boolean = false
-
-            // when
-            val actual: Boolean = board.isAllThreeFound()
+            val actual: Boolean = board.isAllFound(type)
 
             // then
             assertEquals(expected, actual)
@@ -202,8 +164,10 @@ class BoardTest {
         fun `적어도 하나의 찌리리공 카드가 뒤집어졌을 경우 true를 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
-            cards[Position.of('A', 3).toIndex()].flip()
-            val board = Board(cards)
+            cards[Position.of(Row.of('A'), Column.of(3)).toIndex()].flip()
+
+            val board: Board = BoardFactory.create(cards)
+
             val expected: Boolean = true
 
             // when
@@ -217,8 +181,7 @@ class BoardTest {
         @Test
         fun `모든 찌리리공 카드가 뒤집어지지 않은 경우 false를 반환한다`() {
             // given
-            val cards: List<Card> = provideCards()
-            val board = Board(cards)
+            val board: Board = BoardFactory.create(provideCards())
             val expected: Boolean = false
 
             // when
@@ -245,16 +208,16 @@ class BoardTest {
             cardOrder.add(Card(CardType.ONE))
         }
 
-        cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.TWO)
-        cardOrder[Position.of('A', 5).toIndex()] = Card(CardType.TWO)
+        cardOrder[Position.of("A1").toIndex()] = Card(CardType.TWO)
+        cardOrder[Position.of("A5").toIndex()] = Card(CardType.TWO)
 
-        cardOrder[Position.of('A', 2).toIndex()] = Card(CardType.THREE)
-        cardOrder[Position.of('B', 1).toIndex()] = Card(CardType.THREE)
+        cardOrder[Position.of("A2").toIndex()] = Card(CardType.THREE)
+        cardOrder[Position.of("B1").toIndex()] = Card(CardType.THREE)
 
-        cardOrder[Position.of('A', 3).toIndex()] = Card(CardType.VOLTORB)
-        cardOrder[Position.of('A', 4).toIndex()] = Card(CardType.VOLTORB)
-        cardOrder[Position.of('C', 1).toIndex()] = Card(CardType.VOLTORB)
-        cardOrder[Position.of('D', 1).toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("A3").toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("A4").toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("C1").toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("D1").toIndex()] = Card(CardType.VOLTORB)
 
         return cardOrder
     }

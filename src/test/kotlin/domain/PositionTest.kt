@@ -16,11 +16,11 @@ class PositionTest {
         @Test
         fun `전달된 열과 행의 Position 객체를 반환한다`() {
             // given
-            val row = 'A'
-            val column = 1
+            val row: Row = Row.of('A')
+            val column: Column = Column.of(1)
 
             // when
-            val actual = Position.of(row, column)
+            val actual: Position = Position.of(row, column)
 
             // then
             assertThat(actual).extracting("row", "column")
@@ -28,42 +28,14 @@ class PositionTest {
         }
 
         @Test
-        fun `전달된 행 값이 범위를 벗어나는 경우 예외가 발생한다`() {
-            // given
-            val wrongRow = 'Z'
-            val column = 1
-
-            // when
-
-            // then
-            assertThrows(IllegalArgumentException::class.java) {
-                Position.of(wrongRow, column)
-            }
-        }
-
-        @Test
-        fun `전달된 열 값이 범위를 벗어나는 경우 예외가 발생한다`() {
-            // given
-            val row = 'A'
-            val wrongColumn = 9
-
-            // when
-
-            // then
-            assertThrows(IllegalArgumentException::class.java) {
-                Position.of(row, wrongColumn)
-            }
-        }
-
-        @Test
         fun `전달된 문자열의 Position 객체를 반환한다`() {
             // given
             val position: String = "A1"
-            val expectedRow = 'A'
-            val expectedColumn = 1
+            val expectedRow: Row = Row.of('A')
+            val expectedColumn: Column = Column.of(1)
 
             // when
-            val actual = Position.of(position)
+            val actual: Position = Position.of(position)
 
             assertThat(actual).extracting("row", "column")
                 .contains(expectedRow, expectedColumn)
@@ -72,7 +44,7 @@ class PositionTest {
         @Test
         fun `잘못된 형식의 위치 문자열이 전달된 경우 예외가 발생한다`() {
             // given
-            val wrongPosition = "a"
+            val wrongPosition: String = "a"
 
             // when
 
@@ -80,6 +52,24 @@ class PositionTest {
             assertThrows(IllegalArgumentException::class.java) {
                 Position.of(wrongPosition)
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("toIndex 메소드는")
+    inner class ToIndex {
+
+        @Test
+        fun `1차원으로 평탄화한 인덱스를 반환한다`() {
+            // given
+            val position: Position = Position.of("C2")
+            val expected: Int = 11
+
+            // when
+            val actual: Int = position.toIndex()
+
+            // then
+            assertEquals(expected, actual)
         }
     }
 }

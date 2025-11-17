@@ -1,43 +1,44 @@
 package domain
 
-import domain.Constants.MAX_LEVEL
-import domain.Constants.MIN_LEVEL
-import domain.Constants.ROUND_UPPER_BOUND
-import dto.GameStateDto
-import kotlin.math.max
-import kotlin.math.min
-
 class GameState(
-    private var coins: Int,
-    private var round: Int,
-    private var level: Int
+    private val cumulativeCoin: Coin = Coin.of(0),
+    private var round: Round = Round.of(1),
+    private val level: Level = Level.of(1),
+    private var status: GameStatus = GameStatus.RUNNING
 ) {
 
-    fun getCoins(): Int = coins
+    fun getCumulativeCoin(): Coin = cumulativeCoin
 
-    fun getRound(): Int = round
+    fun getRound(): Round = round
 
-    fun getLevel(): Int = level
+    fun getLevel(): Level = level
 
-    fun addCoins(coins: Int) {
-        this.coins += coins
+    fun cumulateCoin(coin: Coin) {
+        cumulativeCoin.add(coin)
     }
 
-    fun nextRound() {
-        round++
+    fun advanceLevel(voltorbFound: Boolean) {
+        level.next(voltorbFound)
     }
 
-    fun nextLevel(voltorbFound: Boolean) {
-        if (voltorbFound) {
-            level = max(level - 1, MIN_LEVEL)
-            return
-        }
+    fun advanceRound() {
+        round.next()
+    }
 
-        level = min(level + 1, MAX_LEVEL)
+    fun exit() {
+        status = GameStatus.EXITED
     }
 
     fun isFinalRound(): Boolean {
-        return round > ROUND_UPPER_BOUND
+        return round.isFinal()
+    }
+
+    fun isFinalRoundOver(): Boolean {
+        return round.isOver()
+    }
+
+    fun isExited(): Boolean {
+        return status == GameStatus.EXITED
     }
 
 }

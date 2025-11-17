@@ -1,17 +1,13 @@
 package command
 
-import manager.GameManager
+import domain.GameState
 
-class ExitCommand(private val gameManager: GameManager): Command {
+class ExitCommand(private val gameState: GameState) : Command {
+
+    private val requiredArgsSize: Int = 0
 
     override fun execute(args: List<String>) {
-        validate(args)
-        gameManager.requestExitGame()
-    }
-
-    private fun validate(args: List<String>) {
-        if (args.isNotEmpty()) {
-            throw IllegalArgumentException("exit 명령은 인자를 받을 수 없습니다")
-        }
+        validateArgsSize(args, requiredArgsSize)
+        gameState.exit()
     }
 }

@@ -6,9 +6,8 @@ object Randoms {
         validateRange(startInclusive, endExclusive)
 
         val numbers: MutableList<Int> =
-            (startInclusive .. endExclusive).map { it -> it }
+            (startInclusive..endExclusive).map { it }
             .toMutableList()
-
         numbers.shuffle()
 
         return numbers[0]
