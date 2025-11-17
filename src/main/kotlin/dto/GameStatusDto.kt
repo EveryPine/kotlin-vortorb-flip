@@ -1,13 +1,10 @@
 package dto
 
 import domain.Board
-import domain.Constants.COLUMN_LOWER_BOUND
-import domain.Constants.COLUMN_UPPER_BOUND
-import domain.Constants.ROW_LOWER_BOUND
-import domain.Constants.ROW_UPPER_BOUND
+import domain.Column
 import domain.GameState
 import domain.Position
-import kotlin.collections.toList
+import domain.Row
 import kotlin.collections.toMap
 
 data class GameStatusDto(
@@ -16,15 +13,13 @@ data class GameStatusDto(
     val cumulativeCoin: CoinDto,
     val currentCoin: CoinDto,
     val cardMap: HashMap<Position, CardDto>,
-    val rowLineHintMap: HashMap<Char, LineHintDto>,
-    val columnLineHintMap: HashMap<Int, LineHintDto>
+    val rowLineHintMap: HashMap<Row, LineHintDto>,
+    val columnLineHintMap: HashMap<Column, LineHintDto>
 ) {
 
     companion object {
 
         fun of(gameState: GameState, board: Board): GameStatusDto {
-            val rows = (ROW_LOWER_BOUND..ROW_UPPER_BOUND).toList()
-            val columns = (COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND).toList()
 
             return GameStatusDto(
                 round = gameState.getRound()
@@ -38,11 +33,11 @@ data class GameStatusDto(
                 cardMap = board.getCardMap()
                     .mapValues { CardDto.from(it.value) }
                     .toMap(HashMap()),
-                rowLineHintMap = rows.associateWith {
+                rowLineHintMap = Row.all.associateWith {
                     LineHintDto.from(
                         board.calculateRowLineHint(it)) }
                     .toMap(HashMap()),
-                columnLineHintMap = columns.associateWith {
+                columnLineHintMap = Column.all.associateWith {
                     LineHintDto.from(
                         board.calculateColumnLineHint(it)) }
                     .toMap(HashMap())

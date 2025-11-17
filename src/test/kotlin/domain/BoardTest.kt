@@ -54,7 +54,7 @@ open class BoardTest {
         fun `행의 카드 힌트를 반환한다`() {
             // given
             val board: Board = BoardFactory.create(provideCards())
-            val row: Char = 'A'
+            val row: Row = Row.of('A')
             val expected: LineHint = LineHint(7, 2)
 
             // when
@@ -73,7 +73,7 @@ open class BoardTest {
         fun `열의 카드 힌트를 반환한다`() {
             // given
             val board: Board = BoardFactory.create(provideCards())
-            val column: Int = 1
+            val column: Column = Column.of(1)
             val expected: LineHint = LineHint(6, 2)
 
             // when
@@ -93,10 +93,10 @@ open class BoardTest {
             // given
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
-                Position.of('A', 3),
-                Position.of('A', 4),
-                Position.of('C', 1),
-                Position.of('D', 1),
+                Position.of(Row.of('A'), Column.of(3)),
+                Position.of(Row.of('A'), Column.of(4)),
+                Position.of(Row.of('C'), Column.of(1)),
+                Position.of(Row.of('D'), Column.of(1)),
             ))
             val board: Board = BoardFactory.create(cards)
             val expected: Coin = Coin.of(2 * 2 * 3 * 3)
@@ -138,10 +138,11 @@ open class BoardTest {
             // given
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
-                Position.of('A', 1),
-                Position.of('A', 2),
-                Position.of('A', 3),
-                Position.of('B', 2)))
+                Position.of("A1"),
+                Position.of("A2"),
+                Position.of("A3"),
+                Position.of("B2"))
+            )
 
             val board: Board = BoardFactory.create(cards)
             val expected: Boolean = false
@@ -163,7 +164,7 @@ open class BoardTest {
         fun `적어도 하나의 찌리리공 카드가 뒤집어졌을 경우 true를 반환한다`() {
             // given
             val cards: List<Card> = provideCards()
-            cards[Position.of('A', 3).toIndex()].flip()
+            cards[Position.of(Row.of('A'), Column.of(3)).toIndex()].flip()
 
             val board: Board = BoardFactory.create(cards)
 
@@ -207,16 +208,16 @@ open class BoardTest {
             cardOrder.add(Card(CardType.ONE))
         }
 
-        cardOrder[Position.of('A', 1).toIndex()] = Card(CardType.TWO)
-        cardOrder[Position.of('A', 5).toIndex()] = Card(CardType.TWO)
+        cardOrder[Position.of("A1").toIndex()] = Card(CardType.TWO)
+        cardOrder[Position.of("A5").toIndex()] = Card(CardType.TWO)
 
-        cardOrder[Position.of('A', 2).toIndex()] = Card(CardType.THREE)
-        cardOrder[Position.of('B', 1).toIndex()] = Card(CardType.THREE)
+        cardOrder[Position.of("A2").toIndex()] = Card(CardType.THREE)
+        cardOrder[Position.of("B1").toIndex()] = Card(CardType.THREE)
 
-        cardOrder[Position.of('A', 3).toIndex()] = Card(CardType.VOLTORB)
-        cardOrder[Position.of('A', 4).toIndex()] = Card(CardType.VOLTORB)
-        cardOrder[Position.of('C', 1).toIndex()] = Card(CardType.VOLTORB)
-        cardOrder[Position.of('D', 1).toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("A3").toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("A4").toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("C1").toIndex()] = Card(CardType.VOLTORB)
+        cardOrder[Position.of("D1").toIndex()] = Card(CardType.VOLTORB)
 
         return cardOrder
     }

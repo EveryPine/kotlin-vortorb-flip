@@ -1,13 +1,11 @@
 package view
 
 import domain.CardState
-import domain.Constants.COLUMN_LOWER_BOUND
-import domain.Constants.COLUMN_UPPER_BOUND
+import domain.Column
 import domain.Constants.MAX_LEVEL
 import domain.Constants.MIN_LEVEL
-import domain.Constants.ROW_LOWER_BOUND
-import domain.Constants.ROW_UPPER_BOUND
 import domain.Position
+import domain.Row
 import dto.CardDto
 import dto.GameResultDto
 import dto.GameStatusDto
@@ -42,9 +40,9 @@ object OutputView {
                 "현재 코인: ${gameStatusDto.currentCoin.value}개\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
-        for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
+        for (row: Row in Row.all) {
             print("$row | ")
-            for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
+            for (column: Column in Column.all) {
                 printCard(gameStatusDto.cardMap[Position.of(row, column)]!!)
             }
             printRowLineHint(gameStatusDto.rowLineHintMap[row]!!)
@@ -72,16 +70,16 @@ object OutputView {
         println(ConsoleColor.red(formatBoardElement(lineHintDto.voltorbCount)))
     }
 
-    private fun printColumnLineHints(lineHintMap: HashMap<Int, LineHintDto>) {
+    private fun printColumnLineHints(lineHintMap: HashMap<Column, LineHintDto>) {
         print("    ")
-        for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
+        for (column: Column in Column.all) {
             val numberCount: Int = lineHintMap[column]!!.numberSum
 
             print(ConsoleColor.blue(formatBoardElement(numberCount)))
             print("   ")
         }
         print("\n    ")
-        for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
+        for (column: Column in Column.all) {
             val voltorbCount: Int = lineHintMap[column]!!.voltorbCount
 
             print(ConsoleColor.red(formatBoardElement(voltorbCount)))

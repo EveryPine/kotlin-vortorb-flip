@@ -1,10 +1,5 @@
 package domain
 
-import domain.Constants.COLUMN_LOWER_BOUND
-import domain.Constants.COLUMN_UPPER_BOUND
-import domain.Constants.ROW_LOWER_BOUND
-import domain.Constants.ROW_UPPER_BOUND
-
 class Board(
     private val cardMap: Map<Position, Card>
 ) {
@@ -35,11 +30,11 @@ class Board(
         cardMap[position]!!.unmark()
     }
 
-    fun calculateRowLineHint(row: Char): LineHint {
+    fun calculateRowLineHint(row: Row): LineHint {
         var numberSum: Int = 0
         var voltorbCount: Int = 0
 
-        for (column in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
+        for (column: Column in Column.all) {
             val card: Card = cardMap[Position.of(row, column)]!!
 
             numberSum = card.addTo(numberSum)
@@ -51,11 +46,11 @@ class Board(
         return LineHint(numberSum, voltorbCount)
     }
 
-    fun calculateColumnLineHint(column: Int): LineHint {
+    fun calculateColumnLineHint(column: Column): LineHint {
         var numberSum: Int = 0
         var voltorbCount: Int = 0
 
-        for (row in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
+        for (row: Row in Row.all) {
             val card: Card = cardMap[Position.of(row, column)]!!
 
             numberSum = card.addTo(numberSum)
