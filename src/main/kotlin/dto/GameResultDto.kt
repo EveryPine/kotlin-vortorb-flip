@@ -3,14 +3,15 @@ package dto
 import domain.GameState
 
 data class GameResultDto(
-    val cumulativeCoins: Int
+    val cumulativeCoin: CoinDto
 ) {
 
     companion object {
 
         fun from(gameState: GameState): GameResultDto {
             return GameResultDto(
-                cumulativeCoins = gameState.getCoins()
+                cumulativeCoin = gameState.getCumulativeCoin()
+                    .toDto()
             )
         }
     }

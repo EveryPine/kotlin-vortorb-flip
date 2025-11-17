@@ -6,7 +6,7 @@ import domain.GameState
 data class RoundResultDto(
     val round: Int,
     val level: LevelDto,
-    val obtainedCoins: Int,
+    val obtainedCoin: CoinDto,
     val voltorbFound: Boolean
 ) {
     companion object {
@@ -15,7 +15,7 @@ data class RoundResultDto(
             return RoundResultDto(
                 round = gameState.getRound(),
                 level = gameState.getLevel().toDto(),
-                obtainedCoins = board.calculateCoins(),
+                obtainedCoin = board.calculateObtainedCoin().toDto(),
                 voltorbFound = board.isVoltorbFound()
             )
         }

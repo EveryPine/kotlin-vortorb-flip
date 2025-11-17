@@ -17,7 +17,7 @@ object GameStatusManager {
     }
 
     fun rerollRound(gameState: GameState, board: Board) {
-        gameState.addCoins(board.calculateCoins())
+        gameState.cumulateCoin(board.calculateObtainedCoin())
         gameState.nextRound()
         gameState.advanceLevel(board.isVoltorbFound())
         board.reset(gameState.getLevel())

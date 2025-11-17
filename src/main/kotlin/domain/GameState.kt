@@ -3,20 +3,20 @@ package domain
 import domain.Constants.ROUND_UPPER_BOUND
 
 class GameState(
-    private var coins: Int = 0,
+    private val cumulativeCoin: Coin = Coin.of(0),
     private var round: Int = 1,
-    private var level: Level = Level.of(1),
+    private val level: Level = Level.of(1),
     private var status: GameStatus = GameStatus.RUNNING
 ) {
 
-    fun getCoins(): Int = coins
+    fun getCumulativeCoin(): Coin = cumulativeCoin
 
     fun getRound(): Int = round
 
     fun getLevel(): Level = level
 
-    fun addCoins(coins: Int) {
-        this.coins += coins
+    fun cumulateCoin(coin: Coin) {
+        cumulativeCoin.add(coin)
     }
 
     fun advanceLevel(voltorbFound: Boolean) {

@@ -79,16 +79,16 @@ class Board(level: Level) {
         return LineHint(numberSum, voltorbCount)
     }
 
-    fun calculateCoins(): Int {
-        var coins: Int = 1
-
-        for (card: Card in cardMap.values) {
-            if (card.isFlipped()) {
-                coins = card.multiplyTo(coins)
-            }
+    fun calculateObtainedCoin(): Coin {
+        val flippedCards: List<Card> = cardMap.values
+            .filter {
+                it.isFlipped() }
+        val earnedCoin: Int = flippedCards.map { it.getType() }
+            .fold(1) {
+            total, card -> total * card.factor
         }
 
-        return coins
+        return Coin.of(earnedCoin)
     }
 
     fun isAllFound(type: CardType): Boolean {

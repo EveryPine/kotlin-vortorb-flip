@@ -19,16 +19,17 @@ class GameStateTest {
         @Test
         fun `현재 게임 코인에 라운드에서 획득한 코인을 추가한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(3)
-            val gameState = GameState(300, 5, level)
-            val roundCoins: Int = 54
+            val gameState = GameState(cumulativeCoin, 5, level)
+            val roundCoins: Coin = Coin.of(54)
             val expected: Int = 354
 
             // when
-            gameState.addCoins(roundCoins)
+            gameState.cumulateCoin(roundCoins)
 
             // then
-            assertThat(gameState).extracting("coins")
+            assertThat(cumulativeCoin).extracting("value")
                 .isEqualTo(expected)
 
 
@@ -42,8 +43,9 @@ class GameStateTest {
         @Test
         fun `라운드를 1 증가시킨다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(1)
-            val gameState = GameState(300, 5, level)
+            val gameState = GameState(cumulativeCoin, 5, level)
             val expected: Int = 6
 
             // when
@@ -62,10 +64,11 @@ class GameStateTest {
         @Test
         fun `레벨 업데이트를 요청한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = mockk(relaxed = true)
             every { level.next(any()) } returns Unit
 
-            val gameState = GameState(300, 5, level)
+            val gameState = GameState(cumulativeCoin, 5, level)
             val expected: Int = 6
 
             // when
@@ -85,8 +88,9 @@ class GameStateTest {
         @Test
         fun `게임을 바로 종료할 수 있는 상태로 변경한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(3)
-            val gameState: GameState = GameState(300, 5, level)
+            val gameState: GameState = GameState(cumulativeCoin, 5, level)
             val expected: GameStatus = GameStatus.EXITED
 
             // when
@@ -105,8 +109,9 @@ class GameStateTest {
         @Test
         fun `최종 라운드가 종료되었을 경우 true를 반환한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(3)
-            val gameState = GameState(300, 11, level)
+            val gameState = GameState(cumulativeCoin, 11, level)
             val expected = true
 
             // when
@@ -119,8 +124,9 @@ class GameStateTest {
         @Test
         fun `최종 라운드가 종료되지 않았을 경우 false를 반환한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(3)
-            val gameState = GameState(300, 4, level)
+            val gameState = GameState(cumulativeCoin, 4, level)
             val expected = false
 
             // when
@@ -138,8 +144,9 @@ class GameStateTest {
         @Test
         fun `게임이 종료된 경우 true를 반환한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(3)
-            val gameState: GameState = GameState(300, 5, level, GameStatus.EXITED)
+            val gameState: GameState = GameState(cumulativeCoin, 5, level, GameStatus.EXITED)
             val expected: Boolean = true
 
             // when
@@ -152,8 +159,9 @@ class GameStateTest {
         @Test
         fun `게임이 종료되지 않은 경우 false를 반환한다`() {
             // given
+            val cumulativeCoin: Coin = Coin.of(300)
             val level: Level = Level.of(3)
-            val gameState: GameState = GameState(300, 5, level)
+            val gameState: GameState = GameState(cumulativeCoin, 5, level)
             val expected: Boolean = false
 
             // when

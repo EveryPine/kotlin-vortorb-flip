@@ -3,6 +3,7 @@ package domain
 import domain.Constants.GRID_EDGE_LENGTH
 import io.mockk.every
 import io.mockk.spyk
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -85,11 +86,11 @@ class BoardTest {
     }
 
     @Nested
-    @DisplayName("calculateCoins 메소드는")
-    inner class CalculateCoins {
+    @DisplayName("calculateObtainedCoin 메소드는")
+    inner class CalculateEarnedCoin {
 
         @Test
-        fun `보드판의 모든 숫자 카드의 곱을 반환한다`() {
+        fun `획득한 코인을 계산하여 반환한다`() {
             // given
             val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
@@ -102,13 +103,14 @@ class BoardTest {
             val board: Board = spyk(Board(level), recordPrivateCalls = true)
             every { board["getCards"](any<Level>()) } returns cards
             board.reset(level)
-            val expected: Int = 2 * 2 * 3 * 3
+            val expected: Coin = Coin.of(2 * 2 * 3 * 3)
 
             // when
-            val actual: Int = board.calculateCoins()
+            val actual: Coin = board.calculateObtainedCoin()
 
             // then
-            assertEquals(expected, actual)
+            assertThat(actual).usingRecursiveComparison()
+                .isEqualTo(expected)
         }
     }
 

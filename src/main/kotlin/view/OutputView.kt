@@ -40,8 +40,8 @@ object OutputView {
     fun printGameStatus(gameStatusDto: GameStatusDto) {
         println("\n라운드: ${gameStatusDto.round} | " +
                 "레벨: ${gameStatusDto.level.value} | " +
-                "누적 코인: ${gameStatusDto.cumulativeCoins}개 | " +
-                "현재 코인: ${gameStatusDto.currentCoints}개\n")
+                "누적 코인: ${gameStatusDto.cumulativeCoin.value}개 | " +
+                "현재 코인: ${gameStatusDto.currentCoin.value}개\n")
         println("     1    2    3    4    5")
         println("  +----+----+----+----+----+")
         for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
@@ -113,7 +113,7 @@ object OutputView {
 
     private fun printObtainedCoins(roundResultDto: RoundResultDto) {
         if (!roundResultDto.voltorbFound) {
-            println("이번 라운드에서 코인 ${roundResultDto.obtainedCoins}개를 획득했습니다.")
+            println("이번 라운드에서 코인 ${roundResultDto.obtainedCoin.value}개를 획득했습니다.")
         }
         if (roundResultDto.voltorbFound) {
             println("이번 라운드에서는 코인을 획득하지 못했습니다.")
@@ -142,7 +142,7 @@ object OutputView {
     fun printGameResult(gameResultDto: GameResultDto) {
         println("게임이 종료되었습니다.")
         println("--- 게임 결과 ---")
-        println("누적 코인: ${gameResultDto.cumulativeCoins}개")
+        println("누적 코인: ${gameResultDto.cumulativeCoin.value}개")
     }
 
     private fun <T> formatBoardElement(element: T): String {

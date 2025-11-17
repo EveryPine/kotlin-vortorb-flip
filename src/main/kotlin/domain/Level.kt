@@ -8,7 +8,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class Level private constructor(
-    private var value: Int = 1
+    private var value: Int
 ) {
 
     companion object {
