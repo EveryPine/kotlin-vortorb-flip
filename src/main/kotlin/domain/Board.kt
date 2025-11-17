@@ -5,35 +5,23 @@ import domain.Constants.COLUMN_UPPER_BOUND
 import domain.Constants.ROW_LOWER_BOUND
 import domain.Constants.ROW_UPPER_BOUND
 
-class Board(level: Level) {
-
-    private val cardMap: HashMap<Position, Card> = HashMap()
+class Board(
+    private val cardMap: Map<Position, Card>
+) {
 
     init {
-        reset(level)
+        validateCardMap(cardMap)
     }
 
-    fun reset(level: Level) {
-        val cards: List<Card> = getCards(level)
-        mapCards(cards)
-    }
-
-    private fun getCards(level: Level): List<Card> {
-        val cardConfig: CardConfig = CardConfigProvider.provide(level)
-
-        return cardConfig.toList()
-    }
-
-    private fun mapCards(cards: List<Card>) {
-        for (row in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
-            for (column in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
-                val position: Position = Position.of(row, column)
-                cardMap[position] = cards[position.toIndex()]
+    private fun validateCardMap(cardMap: Map<Position, Card>) {
+        for (position: Position in cardMap.keys) {
+            if (!cardMap.containsKey(position)) {
+                throw IllegalArgumentException("카드맵에 ${position} 위치의 카드가 존재하지 않습니다.")
             }
         }
     }
 
-    fun getCardMap(): HashMap<Position, Card> = cardMap
+    fun getCardMap(): Map<Position, Card> = cardMap
 
     fun flipOf(position: Position) {
         cardMap[position]!!.flip()

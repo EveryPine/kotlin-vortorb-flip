@@ -1,37 +1,48 @@
 package domain
 
 import domain.Constants.GRID_EDGE_LENGTH
-import io.mockk.every
-import io.mockk.spyk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import kotlin.test.Test
-import kotlin.test.assertNotEquals
 
 @DisplayName("Board 클래스의")
-class BoardTest {
+open class BoardTest {
 
     @Nested
-    @DisplayName("reset 메소드는")
-    inner class Reset {
+    @DisplayName("init 블록은")
+    inner class Init {
 
         @Test
-        fun `다음 라운드를 위해 카드맵을 초기화한다`() {
+        fun `모든 보드판 셀에 카드가 존재하는지 검증한다`() {
             // given
-            val level: Level = Level.of(1)
-            val board: Board = Board(level)
-            val oldCardMap: HashMap<Position, Card> = HashMap(board.getCardMap())
+            val cards: List<Card> = provideCards()
 
             // when
-            board.reset(level)
-            val newCardMap: HashMap<Position, Card> = HashMap(board.getCardMap())
 
             // then
-            assertNotEquals(oldCardMap, newCardMap)
+            assertDoesNotThrow {
+                BoardFactory.create(cards)
+            }
+        }
+
+        @Test
+        fun `어떤 한 셀에 카드가 없는 경우 예외가 발생한다`() {
+            // given
+            val cards: MutableList<Card> = provideCards().toMutableList()
+            cards.removeAt(0)
+
+            // when
+
+            // then
+            assertThrows(IllegalArgumentException::class.java) {
+                BoardFactory.create(cards)
+            }
         }
     }
 
@@ -42,13 +53,7 @@ class BoardTest {
         @Test
         fun `행의 카드 힌트를 반환한다`() {
             // given
-            val level: Level = Level.of(1)
-            val cards: List<Card> = provideCards()
-
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
-
+            val board: Board = BoardFactory.create(provideCards())
             val row: Char = 'A'
             val expected: LineHint = LineHint(7, 2)
 
@@ -67,13 +72,7 @@ class BoardTest {
         @Test
         fun `열의 카드 힌트를 반환한다`() {
             // given
-            val level: Level = Level.of(1)
-            val cards: List<Card> = provideCards()
-
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
-
+            val board: Board = BoardFactory.create(provideCards())
             val column: Int = 1
             val expected: LineHint = LineHint(6, 2)
 
@@ -92,7 +91,6 @@ class BoardTest {
         @Test
         fun `획득한 코인을 계산하여 반환한다`() {
             // given
-            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
                 Position.of('A', 3),
@@ -100,9 +98,7 @@ class BoardTest {
                 Position.of('C', 1),
                 Position.of('D', 1),
             ))
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
+            val board: Board = BoardFactory.create(cards)
             val expected: Coin = Coin.of(2 * 2 * 3 * 3)
 
             // when
@@ -122,14 +118,10 @@ class BoardTest {
         @EnumSource(value = CardType::class)
         fun `모든 요청한 유형의 카드가 뒤집어졌을 경우 true를 반환한다`(type: CardType) {
             // given
-            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             flipAll(cards, null)
 
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
-
+            val board: Board = BoardFactory.create(cards)
             val expected: Boolean = true
 
             // when
@@ -144,7 +136,6 @@ class BoardTest {
         @EnumSource(value = CardType::class)
         fun `적어도 하나의 요청한 유형의 카드가 뒤집어지지 않았을 경우 false를 반환한다`(type: CardType) {
             // given
-            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             flipAll(cards, listOf(
                 Position.of('A', 1),
@@ -152,10 +143,7 @@ class BoardTest {
                 Position.of('A', 3),
                 Position.of('B', 2)))
 
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
-
+            val board: Board = BoardFactory.create(cards)
             val expected: Boolean = false
 
             // when
@@ -174,13 +162,10 @@ class BoardTest {
         @Test
         fun `적어도 하나의 찌리리공 카드가 뒤집어졌을 경우 true를 반환한다`() {
             // given
-            val level: Level = Level.of(1)
             val cards: List<Card> = provideCards()
             cards[Position.of('A', 3).toIndex()].flip()
 
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
+            val board: Board = BoardFactory.create(cards)
 
             val expected: Boolean = true
 
@@ -195,13 +180,7 @@ class BoardTest {
         @Test
         fun `모든 찌리리공 카드가 뒤집어지지 않은 경우 false를 반환한다`() {
             // given
-            val level: Level = Level.of(1)
-            val cards: List<Card> = provideCards()
-
-            val board: Board = spyk(Board(level), recordPrivateCalls = true)
-            every { board["getCards"](any<Level>()) } returns cards
-            board.reset(level)
-
+            val board: Board = BoardFactory.create(provideCards())
             val expected: Boolean = false
 
             // when

@@ -11,6 +11,14 @@ class Position private constructor(private val row: Char, private val column: In
 
         private val cache: HashMap<Pair<Char, Int>, Position> = HashMap()
 
+        val all: List<Position> = buildList() {
+            for (row: Char in ROW_LOWER_BOUND..ROW_UPPER_BOUND) {
+                for (column: Int in COLUMN_LOWER_BOUND..COLUMN_UPPER_BOUND) {
+                    add(of(row, column))
+                }
+            }
+        }
+
         fun of(row: Char, column: Int): Position {
             val uppercaseRow: Char = row.uppercaseChar()
 

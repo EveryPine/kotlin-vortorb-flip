@@ -26,7 +26,8 @@ class GameController(
             }
             if (!GameStatusManager.isGameOver(gameState)) {
                 PrintManager.printRoundResult(gameState, board)
-                GameStatusManager.rerollRound(gameState, board)
+                GameStatusManager.advanceRound(gameState, board)
+                board = GameStatusManager.resetBoard(gameState)
             }
         }
         PrintManager.printGameResult(gameState)

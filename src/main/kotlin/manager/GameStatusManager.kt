@@ -1,6 +1,9 @@
 package manager
 
 import domain.Board
+import domain.BoardFactory
+import domain.Card
+import domain.CardConfigProvider
 import domain.CardType
 import domain.GameState
 
@@ -16,10 +19,17 @@ object GameStatusManager {
                 || board.isVoltorbFound()
     }
 
-    fun rerollRound(gameState: GameState, board: Board) {
+    fun advanceRound(gameState: GameState, board: Board) {
         gameState.cumulateCoin(board.calculateObtainedCoin())
         gameState.advanceRound()
         gameState.advanceLevel(board.isVoltorbFound())
-        board.reset(gameState.getLevel())
+    }
+
+    fun resetBoard(gameState: GameState): Board {
+        val cards: List<Card> = CardConfigProvider.provide(
+            gameState.getLevel())
+            .toList()
+
+        return BoardFactory.create(cards)
     }
 }
