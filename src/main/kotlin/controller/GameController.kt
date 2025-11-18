@@ -15,9 +15,9 @@ class GameController(
     fun run() {
         var input: String
 
-        CommandManager.initCommandMap(gameState, board)
         PrintManager.printGameStartGuide()
         while (!GameStatusManager.isGameOver(gameState)) {
+            CommandManager.initCommandMap(gameState, board)
             PrintManager.printRoundStartGuide(gameState)
             while (!GameStatusManager.isRoundOver(gameState, board)) {
                 PrintManager.printGameStatus(gameState, board)
