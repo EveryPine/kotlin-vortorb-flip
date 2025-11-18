@@ -50,7 +50,6 @@ class GameStateTest {
             every { level.next(any()) } returns Unit
 
             val gameState = GameState(cumulativeCoin, round, level)
-            val expected: Int = 6
 
             // when
             gameState.advanceLevel(true)
