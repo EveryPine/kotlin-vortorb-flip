@@ -17,7 +17,7 @@ object BoardFactory {
         }
     }
 
-    private fun mapCards(cards: List<Card>): HashMap<Position, Card> {
+    private fun mapCards(cards: List<Card>): Map<Position, Card> {
         val cardMap: HashMap<Position, Card> = HashMap()
 
         for (position: Position in Position.all) {

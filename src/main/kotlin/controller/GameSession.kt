@@ -7,7 +7,7 @@ import manager.GameStatusManager
 import manager.PrintManager
 import view.InputView
 
-class GameController(
+class GameSession(
     private val gameState: GameState,
     private var board: Board
 ) {

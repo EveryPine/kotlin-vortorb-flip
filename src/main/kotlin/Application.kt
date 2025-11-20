@@ -1,4 +1,4 @@
-import controller.GameController
+import controller.GameSession
 import domain.Board
 import domain.GameState
 import manager.GameStatusManager
@@ -6,7 +6,7 @@ import manager.GameStatusManager
 fun main() {
     val gameState: GameState = GameState()
     val board: Board = GameStatusManager.resetBoard(gameState)
-    val gameController: GameController = GameController(gameState, board)
+    val gameSession: GameSession = GameSession(gameState, board)
 
-    gameController.run()
+    gameSession.run()
 }
