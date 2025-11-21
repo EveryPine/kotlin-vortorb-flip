@@ -1,4 +1,4 @@
-package controller
+package session
 
 import domain.Board
 import domain.GameState

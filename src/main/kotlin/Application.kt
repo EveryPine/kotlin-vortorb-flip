@@ -1,4 +1,4 @@
-import controller.GameSession
+import session.GameSession
 import domain.Board
 import domain.GameState
 import manager.GameStatusManager
