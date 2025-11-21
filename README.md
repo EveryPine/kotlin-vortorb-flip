@@ -3,6 +3,10 @@
 </p>
 <h1 align="middle">찌리리공 뒤집기</h1>
 
+![Static Badge](https://img.shields.io/badge/Kotlin-2.1-green)
+![Static Badge](https://img.shields.io/badge/Version-1.0.0-red)
+
+
 우아한테크코스 8기 프리코스 4주차 오픈 미션: 찌리리공 뒤집기 게임을 구현한 저장소입니다.
 
 ## 목차
